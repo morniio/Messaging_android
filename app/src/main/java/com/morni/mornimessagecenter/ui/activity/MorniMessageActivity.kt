@@ -31,7 +31,10 @@ class MorniMessageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
 
-        initializeFromIntent(intent)
+        //initializeFromIntent(intent)
+        prefsDao.baseUrl = "https://dev.morniksa.com/api/zayed/mobile/v1/"
+        prefsDao.accessToken = "dcFQ5NsIFq3tIg6KtQXS"
+        prefsDao.appVersion= "2.2.2"
     }
 
     private fun initializeFromIntent(intent: Intent?) {

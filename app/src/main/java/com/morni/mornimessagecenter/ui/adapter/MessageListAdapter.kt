@@ -9,6 +9,7 @@ import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniMessage
 import com.morni.mornimessagecenter.ui.adapter.viewHolder.FooterViewHolder
 import com.morni.mornimessagecenter.ui.adapter.viewHolder.MorniMessageViewHolder
+import kotlinx.android.synthetic.main.default_morni_message_row_layout.view.*
 
 /**
  * Created by Rami El-bouhi on 10,September,2019
@@ -30,7 +31,7 @@ class MessageListAdapter(private val retry: () -> Unit, val clickListener: (Int)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == DATA_VIEW_TYPE) {
             (holder as MorniMessageViewHolder).bind(getItem(position))
-            holder.containerView.setOnClickListener {
+            holder.itemView.container_view.setOnClickListener {
                 clickListener(position)
             }
         } else (holder as FooterViewHolder).bind(context, state)
