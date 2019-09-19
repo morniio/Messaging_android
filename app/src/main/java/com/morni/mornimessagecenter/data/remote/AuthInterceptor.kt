@@ -1,5 +1,6 @@
 package com.morni.mornimessagecenter.data.remote
 
+import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.PrefsDao
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -37,11 +38,14 @@ class AuthInterceptor constructor(private val prefsDao: PrefsDao) : Interceptor 
         if (!prefsDao.accessToken.isNullOrBlank()) {
             requestBuilder.addHeader(AUTHORIZATION, "$BEARER ${prefsDao.accessToken}")
         }
-        requestBuilder.addHeader(ACCEPT_LANGUAGE, prefsDao.language)
+        requestBuilder.addHeader(
+            ACCEPT_LANGUAGE,
+            prefsDao.language ?: LocaleHelper.DEFAULT_LANGUAGE
+        )
         requestBuilder.addHeader(CONTENT_TYPE, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(ACCEPT_ENCODING, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(ACCEPT, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(PLATFORM, ANDROID)
-        requestBuilder.addHeader(APP_VERSION, "2.2.2")
+        requestBuilder.addHeader(APP_VERSION, prefsDao.appVersion ?: "")
     }
 }
