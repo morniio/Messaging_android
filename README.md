@@ -9,12 +9,12 @@
 * [Pre-requisites](#pre-requisites)
 * [Build requirements](#build-requirements)
 * [Setup](#setup)
--- [Current Version](#current-version)
--- [Use Gradle](#use-gradle)
--- [Or Maven](#or-maven)
+	- [Current Version](#current-version)
+	- [Use Gradle](#use-gradle)
+	- [Or Maven](#or-maven)
 * [Usage](#usage)
--- [For Kotlin](#for-kotlin)
--- [For Java](#for-java)
+	- [For Kotlin](#for-kotlin)
+	- [For Java](#for-java)
 * [Customization and advanced options](#customization-and-advanced-options)
 * [Features](#features)
 * [Status](#status)
@@ -168,11 +168,11 @@ Use "IntentIntegration" class for lunching the library with customize options
 #### To customize single message design, as bellow figure, follow the next steps:
 - Create new .xml file in your project with name "default_morni_message_row_layout"
 - Make your new .xml include these ids:
--- container_view: for the root layout in my case its CardView.
--- tv_title: For the TextView that hold the Message title.
--- tv_date: For the TextView that hold Message creation date.
--- tv_body: For the TextView that hold Message body.
--- img_new: For the ImageView that hold Message status (read/un-read).
+	- container_view: for the root layout in my case its CardView.
+	- tv_title: For the TextView that hold the Message title.
+	- tv_date: For the TextView that hold Message creation date.
+	- tv_body: For the TextView that hold Message body.
+	- img_new: For the ImageView that hold Message status (read/un-read).
 
 ![enter image description here](https://user-images.githubusercontent.com/55134740/65246789-82529580-daef-11e9-8ca4-b64b34d79c41.png)
 
@@ -189,3 +189,6 @@ Project is: under testing
 ## License
 
 MorniMessaging is available under the MIT license. See the LICENSE file for more info.
+
+
+
