@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniApiStatus.*
 import com.morni.mornimessagecenter.data.model.MorniMessage
-import com.morni.mornimessagecenter.databinding.DefaultMorniMessageListFragmentBinding
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.ui.adapter.MessageListAdapter
 import com.morni.mornimessagecenter.ui.base.MorniBaseFragment
@@ -29,27 +32,32 @@ class MorniMessageListFragment : MorniBaseFragment() {
         fun newInstance() = MorniMessageListFragment()
     }
 
-    val viewModel: MorniMessageListViewModel by viewModel()
-    private lateinit var fragmentBinding: DefaultMorniMessageListFragmentBinding
+    private val viewModel: MorniMessageListViewModel by viewModel()
     private lateinit var messageListAdapter: MessageListAdapter
     lateinit var messagesList: PagedList<MorniMessage>
+    private var swipeContainer: SwipeRefreshLayout? = null
+    private var btnRetry: Button? = null
+    private var progressBar: ProgressBar? = null
+    private var txtErrorMsg: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentBinding =
-            DataBindingUtil.inflate(
-                inflater, R.layout.default_morni_message_list_fragment, container, false
-            )
+        val view: View? =
+            inflater.inflate(R.layout.default_morni_message_list_fragment, container, false)
 
         // set tool bar title and show back icon
-        (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.toolbarContainer.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(view?.findViewById(R.id.toolbar))
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title =
             getString(R.string.messages)
 
-        fragmentBinding.swipeContainer.setOnRefreshListener { viewModel.refresh() }
+        val rvMessages: RecyclerView? = view?.findViewById(R.id.rv_messages)
+        swipeContainer = view?.findViewById(R.id.swipe_container)
+        btnRetry = view?.findViewById(R.id.btn_retry)
+        progressBar = view?.findViewById(R.id.progress_bar)
+        txtErrorMsg = view?.findViewById(R.id.txt_error_msg)
 
         messageListAdapter = MessageListAdapter({ viewModel.retry() }, { position ->
             view?.let {
@@ -60,11 +68,13 @@ class MorniMessageListFragment : MorniBaseFragment() {
                     .navigate(actionOpenDetails().setMessageId(messagesList[position]?.id ?: 0))
             }
         })
-        fragmentBinding.rvMessages.layoutManager = WrapContentLinearLayoutManager(this.context)
-        fragmentBinding.rvMessages.adapter = messageListAdapter
-        fragmentBinding.btnRetry.setOnClickListener { viewModel.refresh() }
+        rvMessages?.layoutManager = WrapContentLinearLayoutManager(this.context)
+        rvMessages?.adapter = messageListAdapter
 
-        return fragmentBinding.root
+        swipeContainer?.setOnRefreshListener { viewModel.refresh() }
+        btnRetry?.setOnClickListener { viewModel.refresh() }
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,44 +84,44 @@ class MorniMessageListFragment : MorniBaseFragment() {
         viewModel.messagesResponse().observe(this, Observer {
             messagesList = it
             messageListAdapter.submitList(it)
-            fragmentBinding.swipeContainer.isRefreshing = false
+            swipeContainer?.isRefreshing = false
         })
     }
 
     private fun updateUI(response: MorniApiStatus) {
         when (response) {
-            INITIAL_LOADING -> fragmentBinding.progressBar.visibility = View.VISIBLE
+            INITIAL_LOADING -> progressBar?.visibility = View.VISIBLE
             LOADING -> messageListAdapter.setState(LOADING)
             INITIAL_SUCCESS -> {
-                fragmentBinding.progressBar.visibility = View.GONE
-                fragmentBinding.txtErrorMsg.visibility = View.GONE
-                fragmentBinding.btnRetry.visibility = View.GONE
+                progressBar?.visibility = View.GONE
+                txtErrorMsg?.visibility = View.GONE
+                btnRetry?.visibility = View.GONE
             }
             SUCCESS -> {
                 messageListAdapter.setState(SUCCESS)
             }
             INITIAL_NO_INTERNET -> {
-                fragmentBinding.progressBar.visibility = View.GONE
-                fragmentBinding.txtErrorMsg.text = getString(R.string.no_internet_connection)
-                fragmentBinding.txtErrorMsg.visibility = View.VISIBLE
-                fragmentBinding.btnRetry.visibility = View.VISIBLE
+                progressBar?.visibility = View.GONE
+                txtErrorMsg?.text = getString(R.string.no_internet_connection)
+                txtErrorMsg?.visibility = View.VISIBLE
+                btnRetry?.visibility = View.VISIBLE
             }
             NO_INTERNET -> {
                 messageListAdapter.setState(NO_INTERNET)
             }
             INITIAL_ERROR -> {
-                fragmentBinding.progressBar.visibility = View.GONE
-                fragmentBinding.txtErrorMsg.text = getString(R.string.error_msg)
-                fragmentBinding.txtErrorMsg.visibility = View.VISIBLE
-                fragmentBinding.btnRetry.visibility = View.VISIBLE
+                progressBar?.visibility = View.GONE
+                txtErrorMsg?.text = getString(R.string.error_msg)
+                txtErrorMsg?.visibility = View.VISIBLE
+                btnRetry?.visibility = View.VISIBLE
             }
             ERROR -> {
                 messageListAdapter.setState(ERROR)
             }
             EMPTY_DATA -> {
-                fragmentBinding.txtErrorMsg.text = getString(R.string.no_data)
-                fragmentBinding.txtErrorMsg.visibility = View.VISIBLE
-                fragmentBinding.btnRetry.visibility = View.VISIBLE
+                txtErrorMsg?.text = getString(R.string.no_data)
+                txtErrorMsg?.visibility = View.VISIBLE
+                btnRetry?.visibility = View.VISIBLE
             }
             UN_AUTHORIZED -> (activity as MorniMessageActivity).unAuthorizedLogin()
         }

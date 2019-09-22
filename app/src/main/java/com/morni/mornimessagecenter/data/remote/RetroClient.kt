@@ -31,7 +31,7 @@ object RetroClient {
 
         val retrofit = Retrofit
             .Builder()
-            .baseUrl(prefsDao.baseUrl)
+            .baseUrl(prefsDao.baseUrl!!)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
