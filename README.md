@@ -16,6 +16,8 @@
 	- [For Kotlin](#for-kotlin)
 	- [For Java](#for-java)
 * [Customization and advanced options](#customization-and-advanced-options)
+	* [Customize Message Cell](#customize-message-cell)
+	* [Customize Message Details screen](#customize-message-details-screen)
 * [Features](#features)
 * [Status](#status)
 * [License](#license)
