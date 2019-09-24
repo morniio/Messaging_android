@@ -1,11 +1,13 @@
 package com.morni.mornimessagecenter.ui.adapter.viewHolder
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.data.model.MorniMessage
+import com.morni.mornimessagecenter.util.getFormattedDate
 import kotlinx.android.synthetic.main.default_morni_message_row_layout.view.*
 
 /**
@@ -21,11 +23,11 @@ class MorniMessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(morniMessage: MorniMessage?) {
+    fun bind(context: Context, morniMessage: MorniMessage?) {
         if (morniMessage != null) {
             itemView.tv_title.text = morniMessage.title ?: ""
             itemView.tv_body.text = morniMessage.subTitle ?: ""
-            itemView.tv_date.text = morniMessage.createdAt ?: ""
+            itemView.tv_date.text = getFormattedDate(context,morniMessage.createdAt)
             itemView.img_new.visibility = when {
                 morniMessage.isRead == true -> View.GONE
                 else -> View.VISIBLE

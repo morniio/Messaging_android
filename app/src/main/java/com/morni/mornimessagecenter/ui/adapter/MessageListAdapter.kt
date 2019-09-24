@@ -30,7 +30,7 @@ class MessageListAdapter(private val retry: () -> Unit, val clickListener: (Int)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == DATA_VIEW_TYPE) {
-            (holder as MorniMessageViewHolder).bind(getItem(position))
+            (holder as MorniMessageViewHolder).bind(context, getItem(position))
             holder.itemView.container_view.setOnClickListener {
                 clickListener(position)
             }

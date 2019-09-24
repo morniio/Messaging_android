@@ -15,5 +15,6 @@
     <string name="access_token" translatable="false">Token  attribute</string>
     <string name="application_version" translatable="false">Application version  attribute</string>
     <string name="not_use_integration_error_msg" translatable="false">Please,use IntentIntegration class to be able to integrate with this library</string>
+    <string name="at" >at</string>
 
 </resources>

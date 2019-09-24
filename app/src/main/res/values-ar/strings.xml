@@ -9,4 +9,5 @@
     <string name="no_internet_connection_try_again">لا يوجد اتصال بالإنترنت, إضغط لإعادة المحاولة.</string>
     <string name="missing_data">بيانات مفقودة</string>
     <string name="is_missing">مفقود</string>
+    <string name="at" >في</string>
 </resources>
