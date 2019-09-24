@@ -19,6 +19,7 @@ import com.morni.mornimessagecenter.data.model.MorniMessage
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.ui.base.MorniBaseFragment
 import com.morni.mornimessagecenter.ui.viewModel.MorniMessageDetailsViewModel
+import com.morni.mornimessagecenter.util.getFormattedDate
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MorniMessageDetailsFragment : MorniBaseFragment() {
@@ -96,7 +97,7 @@ class MorniMessageDetailsFragment : MorniBaseFragment() {
                 val morniMessage: MorniMessage? = response.data
                 if (morniMessage != null) {
                     tvTitle?.text = morniMessage.title ?: ""
-                    tvDate?.text = morniMessage.createdAt ?: ""
+                    tvDate?.text = getFormattedDate(activity, morniMessage.createdAt)
                     tvBody?.text = morniMessage.body ?: ""
                 }
             }
