@@ -55,7 +55,7 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 ### Current Version
 
     // latest stable
-    morni_lib_version= '0.1.1'
+    morni_lib_version= '0.1.3'
 
 ### Use Gradle
 
