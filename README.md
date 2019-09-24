@@ -16,6 +16,8 @@
 	- [For Kotlin](#for-kotlin)
 	- [For Java](#for-java)
 * [Customization and advanced options](#customization-and-advanced-options)
+	* [Customize Message Cell](#customize-message-cell)
+	* [Customize Message Details screen](#customize-message-details-screen)
 * [Features](#features)
 * [Status](#status)
 * [License](#license)
@@ -39,11 +41,8 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 ## Pre-requisites
 
 - Android Studio 3.5 or higher
-- Enable Data binding
 - Enable multiDex
 
-
-    dataBinding.enabled = true
     multiDexEnabled true
 
 ## Build requirements
@@ -56,7 +55,7 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 ### Current Version
 
     // latest stable
-    morni_lib_version= '0.1.0'
+    morni_lib_version= '0.1.1'
 
 ### Use Gradle
 
@@ -165,6 +164,7 @@ Use "IntentIntegration" class for lunching the library with customize options
     }
 ## Customization and advanced options
 
+### Customize Message Cell
 #### To customize single message design, as bellow figure, follow the next steps:
 - Create new .xml file in your project with name "default_morni_message_row_layout"
 - Make your new .xml include these ids:
@@ -176,8 +176,41 @@ Use "IntentIntegration" class for lunching the library with customize options
 
 ![enter image description here](https://user-images.githubusercontent.com/55134740/65246789-82529580-daef-11e9-8ca4-b64b34d79c41.png)
 
+#### To customize footer cell, as bellow figure, follow next steps:
+- Create new .xml file in your project with name "default_footer_layout"
+- Make your new .xml include these ids:
+	- progress_bar: For the ProgressBar.
+	- txt_error: For the TextView that hold error message.
+	
+	![loading](https://user-images.githubusercontent.com/55134740/65386194-8c1b0980-dd38-11e9-849c-28d65c167c9b.png)![no internet](https://user-images.githubusercontent.com/55134740/65386195-8de4cd00-dd38-11e9-8601-c762031d5065.png)
+
+### Customize Message Details screen
+#### To customize message details design, as bellow figure, follow the next steps:
+- Create new .xml file in your project with name "default_morni_message_details_fragment"
+- Make your new .xml include these ids:
+	- toolbar: For the Toolbar
+		- or use our custom toolbar, by including it in your xml [See](#include-library-toolbar).
+	- progress_bar: For the ProgressBar.
+	- txt_error: For the TextView that hold error message.
+	- btn_retry: For Button to retry again
+	- cv_details: For the details container in my case its CardView.
+	- tv_title: For the TextView that hold the Message title.
+	- tv_date: For the TextView that hold Message creation date.
+	- tv_body: For the TextView that hold Message body.
 
 
+![message_details](https://user-images.githubusercontent.com/55134740/65386232-18c5c780-dd39-11e9-9df5-371b52c69456.png)
+
+#### Include Library Toolbar
+
+    <include  
+      android:id="@+id/toolbar_container"  
+      layout="@layout/toolbar_container"  
+      app:layout_constraintEnd_toEndOf="parent"  
+      app:layout_constraintStart_toStartOf="parent"  
+      app:layout_constraintTop_toTopOf="parent" />
+
+  
 ## Features
 List of features ready
 -   List all read and unread messages received from end-point
@@ -189,6 +222,7 @@ Project is: under testing
 ## License
 
 MorniMessaging is available under the MIT license. See the LICENSE file for more info.
+
 
 
 
