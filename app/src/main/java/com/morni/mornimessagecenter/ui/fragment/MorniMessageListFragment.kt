@@ -18,21 +18,20 @@ import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniApiStatus.*
 import com.morni.mornimessagecenter.data.model.MorniMessage
+import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.ui.adapter.MessageListAdapter
 import com.morni.mornimessagecenter.ui.base.MorniBaseFragment
 import com.morni.mornimessagecenter.ui.fragment.MorniMessageListFragmentDirections.actionOpenDetails
 import com.morni.mornimessagecenter.ui.viewModel.MorniMessageListViewModel
 import com.morni.mornimessagecenter.util.WrapContentLinearLayoutManager
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MorniMessageListFragment : MorniBaseFragment() {
 
-    companion object {
-        fun newInstance() = MorniMessageListFragment()
+    private val viewModel by lazy {
+        MorniMessageListViewModel(Injection.provideRepository(context!!))
     }
 
-    private val viewModel: MorniMessageListViewModel by viewModel()
     private lateinit var messageListAdapter: MessageListAdapter
     lateinit var messagesList: PagedList<MorniMessage>
     private var swipeContainer: SwipeRefreshLayout? = null
@@ -79,7 +78,6 @@ class MorniMessageListFragment : MorniBaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         viewModel.statusResponse().observe(this, Observer { response -> updateUI(response) })
         viewModel.messagesResponse().observe(this, Observer {
             messagesList = it

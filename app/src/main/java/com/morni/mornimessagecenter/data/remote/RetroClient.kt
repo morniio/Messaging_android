@@ -14,17 +14,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * Created by Rami El-bouhi on 09,September,2019
  */
 object RetroClient {
-    fun createOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
-        return OkHttpClient().newBuilder()
-            .addInterceptor(authInterceptor)
+
+    private var mApiService: ApiService? = null
+
+    private fun createApiService(prefsDao: PrefsDao): ApiService {
+        val okHttpClient = OkHttpClient().newBuilder()
+            .addInterceptor(AuthInterceptor(prefsDao))
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level =
-                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             })
             .build()
-    }
 
-    fun createApiService(okHttpClient: OkHttpClient, prefsDao: PrefsDao): ApiService {
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
@@ -37,6 +37,10 @@ object RetroClient {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-        return retrofit.create(ApiService::class.java)
+         return retrofit.create(ApiService::class.java)
+
     }
+
+    fun getApiService(prefsDao: PrefsDao) =
+        mApiService ?: createApiService(prefsDao).apply { mApiService = this }
 }

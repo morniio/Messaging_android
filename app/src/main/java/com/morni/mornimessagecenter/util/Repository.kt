@@ -13,7 +13,14 @@ class Repository(
     val prefsDao: PrefsDao
 ) {
 
-    fun getMessageDetails(id: Long): Single<MessageDetailsResponse> {
-        return apiService.getMessageDetails(id)
+    companion object {
+        private var mInstance: Repository? = null
+
+        fun getInstance(
+            resourceProvider: ResourceProvider,
+            apiService: ApiService,
+            prefsDao: PrefsDao
+        )= mInstance ?: Repository(resourceProvider, apiService, prefsDao)
+            .apply { mInstance = this }
     }
 }

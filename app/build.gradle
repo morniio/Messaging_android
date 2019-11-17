@@ -56,10 +56,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    // Koin for Android
-    implementation "org.koin:koin-android:$koin_version"
-    // Koin AndroidX ViewModel feature
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     // Paging Lib
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // Retrofit2 Lib

@@ -7,11 +7,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.morni.mornimessagecenter.R
+import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.integration.Intents
-import com.morni.mornimessagecenter.util.LocaleHelper
-import com.morni.mornimessagecenter.util.PrefsDao
 import com.morni.mornimessagecenter.util.showAlertDialog
-import org.koin.android.ext.android.inject
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
@@ -19,12 +17,14 @@ import org.koin.android.ext.android.inject
 
 class MorniMessageActivity : AppCompatActivity() {
 
-    val prefsDao: PrefsDao by inject()
-    val localeHelper: LocaleHelper by inject()
+    private val prefsDao by lazy { Injection.providePreference(this) }
 
-    override fun attachBaseContext(base: Context) {
+    private val localeHelper by lazy { Injection.provideLocalHelper(this) }
+
+    //todo
+ /*   override fun attachBaseContext(base: Context) {
         super.attachBaseContext(localeHelper.onAttach())
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
