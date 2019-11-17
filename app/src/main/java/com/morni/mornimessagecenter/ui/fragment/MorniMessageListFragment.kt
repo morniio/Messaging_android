@@ -31,7 +31,6 @@ class MorniMessageListFragment : MorniBaseFragment() {
     private val viewModel by lazy {
         MorniMessageListViewModel(Injection.provideRepository(context!!))
     }
-
     private lateinit var messageListAdapter: MessageListAdapter
     lateinit var messagesList: PagedList<MorniMessage>
     private var swipeContainer: SwipeRefreshLayout? = null

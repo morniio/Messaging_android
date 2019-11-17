@@ -19,17 +19,18 @@ class MorniMessageActivity : AppCompatActivity() {
 
     private val prefsDao by lazy { Injection.providePreference(this) }
 
-    private val localeHelper by lazy { Injection.provideLocalHelper(this) }
-
-    //todo
- /*   override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(localeHelper.onAttach())
-    }*/
+    override fun attachBaseContext(base: Context) =
+        super.attachBaseContext(Injection.provideLocalHelper(base).onAttach())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
-        initializeFromIntent(intent)
+        prefsDao.baseUrl = "https://api-dev.zayed.io/api/zayed/mobile/v1/"
+        prefsDao.accessToken = "eMkjNzEpz48Ur8BDmZXJ"
+        prefsDao.language = "ar"
+        prefsDao.appVersion = "1.2.1"
+        prefsDao.pageSize = 10
+        //initializeFromIntent(intent)
     }
 
     private fun initializeFromIntent(intent: Intent?) {
