@@ -59,8 +59,7 @@ class MorniMessageDetailsFragment : MorniBaseFragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(view?.findViewById(R.id.toolbar))
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title =
-            getString(R.string.messages)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.messages)
 
         btnRetry = view?.findViewById(R.id.btn_retry)
         progressBar = view?.findViewById(R.id.progress_bar)

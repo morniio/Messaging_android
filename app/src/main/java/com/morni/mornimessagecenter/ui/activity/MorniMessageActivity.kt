@@ -23,14 +23,12 @@ class MorniMessageActivity : AppCompatActivity() {
     val localeHelper: LocaleHelper by inject()
 
     override fun attachBaseContext(base: Context) {
-
         super.attachBaseContext(localeHelper.onAttach())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
-
         initializeFromIntent(intent)
     }
 
