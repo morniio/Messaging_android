@@ -32,7 +32,7 @@ class MorniMessageListFragment : MorniBaseFragment() {
         MorniMessageListViewModel(Injection.provideRepository(context!!))
     }
     private lateinit var messageListAdapter: MessageListAdapter
-    lateinit var messagesList: PagedList<MorniMessage>
+    private lateinit var messagesList: PagedList<MorniMessage>
     private var swipeContainer: SwipeRefreshLayout? = null
     private var btnRetry: Button? = null
     private var progressBar: ProgressBar? = null
