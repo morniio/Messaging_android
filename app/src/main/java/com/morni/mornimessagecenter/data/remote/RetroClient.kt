@@ -38,7 +38,6 @@ object RetroClient {
             .build()
 
          return retrofit.create(ApiService::class.java)
-
     }
 
     fun getApiService(prefsDao: PrefsDao) =

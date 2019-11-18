@@ -26,8 +26,8 @@ class MorniMessageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
         prefsDao.baseUrl = "https://api-dev.zayed.io/api/zayed/mobile/v1/"
-        prefsDao.accessToken = "eMkjNzEpz48Ur8BDmZXJ"
-        prefsDao.language = "ar"
+        prefsDao.accessToken = "Ix3j0G559KHRV2pEUwRh"
+        prefsDao.language = "en"
         prefsDao.appVersion = "1.2.1"
         prefsDao.pageSize = 10
         //initializeFromIntent(intent)
@@ -56,7 +56,7 @@ class MorniMessageActivity : AppCompatActivity() {
                 this,
                 getString(R.string.missing_data),
                 getString(R.string.not_use_integration_error_msg),
-                DialogInterface.OnClickListener({ dialogInterface, i -> this.finish() })
+                DialogInterface.OnClickListener { _, _ -> this.finish() }
             )
         }
     }
@@ -67,6 +67,5 @@ class MorniMessageActivity : AppCompatActivity() {
         intent.putExtra(Intents.MESSAGE, "Un Authorized Login")
         setResult(Activity.RESULT_OK, intent)
         finish()
-
     }
 }

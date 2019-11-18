@@ -85,43 +85,36 @@ class MorniMessageListFragment : MorniBaseFragment() {
         })
     }
 
-    private fun updateUI(response: MorniApiStatus) {
-        when (response) {
-            INITIAL_LOADING -> progressBar?.visibility = View.VISIBLE
-            LOADING -> messageListAdapter.setState(LOADING)
-            INITIAL_SUCCESS -> {
-                progressBar?.visibility = View.GONE
-                txtErrorMsg?.visibility = View.GONE
-                btnRetry?.visibility = View.GONE
-            }
-            SUCCESS -> {
-                messageListAdapter.setState(SUCCESS)
-            }
-            INITIAL_NO_INTERNET -> {
-                progressBar?.visibility = View.GONE
-                txtErrorMsg?.text = getString(R.string.no_internet_connection)
-                txtErrorMsg?.visibility = View.VISIBLE
-                btnRetry?.visibility = View.VISIBLE
-            }
-            NO_INTERNET -> {
-                messageListAdapter.setState(NO_INTERNET)
-            }
-            INITIAL_ERROR -> {
-                progressBar?.visibility = View.GONE
-                txtErrorMsg?.text = getString(R.string.error_msg)
-                txtErrorMsg?.visibility = View.VISIBLE
-                btnRetry?.visibility = View.VISIBLE
-            }
-            ERROR -> {
-                messageListAdapter.setState(ERROR)
-            }
-            EMPTY_DATA -> {
-                txtErrorMsg?.text = getString(R.string.no_data)
-                txtErrorMsg?.visibility = View.VISIBLE
-                btnRetry?.visibility = View.VISIBLE
-            }
-            UN_AUTHORIZED -> (activity as MorniMessageActivity).unAuthorizedLogin()
+    private fun updateUI(response: MorniApiStatus) = when (response) {
+        INITIAL_LOADING -> progressBar?.visibility = View.VISIBLE
+        LOADING -> messageListAdapter.setState(LOADING)
+        INITIAL_SUCCESS -> {
+            progressBar?.visibility = View.GONE
+            txtErrorMsg?.visibility = View.GONE
+            btnRetry?.visibility = View.GONE
         }
+        SUCCESS -> messageListAdapter.setState(SUCCESS)
+        INITIAL_NO_INTERNET -> {
+            progressBar?.visibility = View.GONE
+            txtErrorMsg?.text = getString(R.string.no_internet_connection)
+            txtErrorMsg?.visibility = View.VISIBLE
+            btnRetry?.visibility = View.VISIBLE
+        }
+        NO_INTERNET -> messageListAdapter.setState(NO_INTERNET)
+        INITIAL_ERROR -> {
+            progressBar?.visibility = View.GONE
+            txtErrorMsg?.text = getString(R.string.error_msg)
+            txtErrorMsg?.visibility = View.VISIBLE
+            btnRetry?.visibility = View.VISIBLE
+        }
+        ERROR -> messageListAdapter.setState(ERROR)
+        EMPTY_DATA -> {
+            progressBar?.visibility = View.GONE
+            txtErrorMsg?.text = getString(R.string.no_data)
+            txtErrorMsg?.visibility = View.VISIBLE
+            btnRetry?.visibility = View.VISIBLE
+        }
+        UN_AUTHORIZED -> (activity as MorniMessageActivity).unAuthorizedLogin()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

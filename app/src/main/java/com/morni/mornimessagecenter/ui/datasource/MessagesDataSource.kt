@@ -91,9 +91,7 @@ class MessagesDataSource(
         )
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage>) {
-
-    }
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage>) = Unit
 
     fun retry() {
         if (retryCompletable != null) {

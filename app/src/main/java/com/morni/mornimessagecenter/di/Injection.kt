@@ -11,12 +11,12 @@ object Injection {
 
     fun provideRepository(context: Context) = Repository(
         ResourceProvider(context),
-        RetroClient.getApiService(PrefsDao(context)),
-        PrefsDao(context)
+        RetroClient.getApiService(providePreference(context)),
+        providePreference(context)
     )
 
-    fun providePreference(context: Context) = PrefsDao(context)
+    fun providePreference(context: Context) = PrefsDao.getInstance(context)
 
-    fun provideLocalHelper(context: Context) = LocaleHelper(PrefsDao(context), context)
+    fun provideLocalHelper(context: Context) = LocaleHelper(providePreference(context), context)
 
 }
