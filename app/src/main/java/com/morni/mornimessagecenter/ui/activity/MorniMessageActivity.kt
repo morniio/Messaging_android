@@ -29,20 +29,18 @@ class MorniMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
-
-
         initializeFromIntent(intent)
     }
 
     private fun initializeFromIntent(intent: Intent?) = intent.run {
-        if(!hasValueOf(BASE_URL)||!hasValueOf(ACCESS_TOKEN)||!hasValueOf(APP_VERSION))
+        if(!hasValueOf(BASE_URL) || !hasValueOf(ACCESS_TOKEN) || !hasValueOf(APP_VERSION))
             showAlertDialog(
                 this@MorniMessageActivity,
                 getString(R.string.missing_data),
                 getString(R.string.not_use_integration_error_msg),
                 DialogInterface.OnClickListener { _, _ -> this@MorniMessageActivity.finish() }
             )
-        // This is to open details screen when user passes message id only.
+        // This opens details screen when user passes message id only. Otherwise list fragment will be started by default.
         getValueOf(MESSAGE_ID)?.let {
             findNavController(R.id.fragment).navigate(
                 actionOpenDetails().setMessageId(it)
@@ -54,7 +52,7 @@ class MorniMessageActivity : AppCompatActivity() {
         this != null && extras?.containsKey(key) == true
 
     private fun Intent?.getValueOf(key: String) =
-        if(!hasValueOf(key)) null else this?.getLongExtra(MESSAGE_ID, 0)
+        if(!hasValueOf(key)) null else this?.getLongExtra(key, 0)
 
     fun unAuthorizedLogin() {
         val intent = Intent(Intents.START_ACTION)

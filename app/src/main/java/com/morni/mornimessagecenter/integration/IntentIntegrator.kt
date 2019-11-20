@@ -164,9 +164,9 @@ class IntentIntegrator(private val activity: Activity) {
     }
 
     /**
-     * This will be set if user wants to open details of the message by its id.
+     * This will be set if user wants to open details of the message by its id directly.
      */
-    fun setMessageIdToOpen(messageId: Long): IntentIntegrator {
+    fun setMessageId(messageId: Long): IntentIntegrator {
         if (messageId > 0) {
             this.messageId = messageId
             addExtra(Intents.MESSAGE_ID, messageId)

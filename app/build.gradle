@@ -1,5 +1,6 @@
-apply plugin: 'com.android.application' // todo convert.....
-//apply plugin: 'com.android.library'
+/*apply plugin: 'com.android.application'*/
+apply plugin: 'com.android.library'
+
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
@@ -8,7 +9,7 @@ apply plugin: "androidx.navigation.safeargs"
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.morni.mornimessagecenter"
+        /*applicationId "com.morni.mornimessagecenter"*/
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 10001
