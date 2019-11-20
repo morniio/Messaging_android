@@ -20,7 +20,6 @@ class MorniMessageListViewModel(repository: Repository) : ViewModel() {
     private val statusResponse: LiveData<MorniApiStatus>
     private var morniMessages: LiveData<PagedList<MorniMessage>>
     private val compositeDisposable = CompositeDisposable()
-    //private val pageSize = 5
     private val messagesDataSourceFactory: MessagesDataSourceFactory
     private val executor: Executor
 
@@ -42,13 +41,9 @@ class MorniMessageListViewModel(repository: Repository) : ViewModel() {
             )
     }
 
-    fun statusResponse(): LiveData<MorniApiStatus> {
-        return statusResponse
-    }
+    fun statusResponse(): LiveData<MorniApiStatus> = statusResponse
 
-    fun messagesResponse(): LiveData<PagedList<MorniMessage>> {
-        return morniMessages
-    }
+    fun messagesResponse(): LiveData<PagedList<MorniMessage>> = morniMessages
 
     fun retry() {
         messagesDataSourceFactory.messagesDataSourceLiveData.value?.retry()

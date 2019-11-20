@@ -7,10 +7,7 @@ package com.morni.mornimessagecenter.integration
 class Intents {
 
     companion object {
-        /**
-         * Send this intent to open the Barcodes app in scanning mode, find a barcode, and return
-         * the results.
-         */
+
         const val START_ACTION = "com.morni.mornimessagecenter.START"
         const val STATUS: String = "status"
         const val MESSAGE: String = "message"
@@ -19,8 +16,7 @@ class Intents {
         const val LANGUAGE: String = "language"
         const val APP_VERSION: String = "app_version"
         const val PAGE_SIZE: String = "page_size"
-
-        // default page size
         const val DEFAULT_PAGE_SIZE = 10
+        const val MESSAGE_ID = "message_id"
     }
 }

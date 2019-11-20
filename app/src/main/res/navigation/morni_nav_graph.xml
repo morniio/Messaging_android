@@ -14,6 +14,7 @@
             android:id="@+id/action_open_details"
             app:destination="@id/destination_details" />
     </fragment>
+
     <fragment
         android:id="@+id/destination_details"
         android:name="com.morni.mornimessagecenter.ui.fragment.MorniMessageDetailsFragment"

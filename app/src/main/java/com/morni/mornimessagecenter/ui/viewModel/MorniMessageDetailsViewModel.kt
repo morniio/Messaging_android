@@ -36,7 +36,7 @@ class MorniMessageDetailsViewModel(private val repository: Repository) : ViewMod
                         try {
                             val errorParser: MessageDetailsResponse =
                                 adapter.fromJson(body!!.string())
-                            if (error.response().code() == 401) {
+                            if (error.code() == 401) {
                                 messageDetailsResponse.postValue(
                                     MessageDetailsResponse.authorizationError(
                                         errorParser.message
