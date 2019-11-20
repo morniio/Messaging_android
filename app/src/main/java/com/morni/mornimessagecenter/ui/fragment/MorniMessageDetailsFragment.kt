@@ -16,19 +16,18 @@ import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.data.model.MessageDetailsResponse
 import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniMessage
+import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.ui.base.MorniBaseFragment
 import com.morni.mornimessagecenter.ui.viewModel.MorniMessageDetailsViewModel
 import com.morni.mornimessagecenter.util.getFormattedDate
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MorniMessageDetailsFragment : MorniBaseFragment() {
 
-    companion object {
-        fun newInstance() = MorniMessageDetailsFragment()
+    private val viewModel by lazy {
+        MorniMessageDetailsViewModel(Injection.provideRepository(context!!))
     }
 
-    private val viewModel: MorniMessageDetailsViewModel by viewModel()
     var messageId: Long = 0
     private var cvDetails: CardView? = null
     private var btnRetry: Button? = null
@@ -59,8 +58,7 @@ class MorniMessageDetailsFragment : MorniBaseFragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(view?.findViewById(R.id.toolbar))
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title =
-            getString(R.string.messages)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.messages)
 
         btnRetry = view?.findViewById(R.id.btn_retry)
         progressBar = view?.findViewById(R.id.progress_bar)

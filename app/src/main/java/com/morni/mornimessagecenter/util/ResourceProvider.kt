@@ -7,7 +7,6 @@ import android.content.Context
  */
 class ResourceProvider(private var context: Context?) {
 
-    fun getString(resId: Int): String {
-        return context?.getString(resId) ?: ""
-    }
+    fun getString(resId: Int) = context?.getString(resId) ?: ""
+
 }

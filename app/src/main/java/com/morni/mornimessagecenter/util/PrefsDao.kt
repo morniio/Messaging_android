@@ -17,16 +17,6 @@ class PrefsDao constructor(context: Context) {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    companion object {
-        const val PREFS_NAME = "rememberMe"
-
-        private const val ACCESS_TOKEN = "token"
-        private const val BASE_URL = "base_url"
-        private const val LANGUAGE = "language"
-        private const val APP_VERSION = "app_version"
-        private const val PAGE_SIZE = "page_size"
-    }
-
     var accessToken: String?
         get() = sharedPreferences[ACCESS_TOKEN]
         set(value) {
@@ -57,5 +47,26 @@ class PrefsDao constructor(context: Context) {
             sharedPreferences[PAGE_SIZE] = value
         }
 
+    var messageId: Long?
+        get() = sharedPreferences[MESSAGE_ID]
+        set(value) {
+            sharedPreferences[MESSAGE_ID] = value
+        }
+
     fun clear() = sharedPreferences.edit().clear().apply()
+
+    companion object {
+        private var mInstance: PrefsDao? = null
+
+        private const val PREFS_NAME = "rememberMe"
+        private const val ACCESS_TOKEN = "token"
+        private const val BASE_URL = "base_url"
+        private const val LANGUAGE = "language"
+        private const val APP_VERSION = "app_version"
+        private const val PAGE_SIZE = "page_size"
+        private const val MESSAGE_ID = "message_id"
+
+        fun getInstance(context: Context): PrefsDao
+                = mInstance ?: PrefsDao(context).apply { mInstance = this }
+    }
 }
