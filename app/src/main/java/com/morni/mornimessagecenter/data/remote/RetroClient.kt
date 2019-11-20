@@ -40,6 +40,9 @@ object RetroClient {
          return retrofit.create(ApiService::class.java)
     }
 
+    /**
+     * Singleton function to provide one instance of the api service through life of the application.
+     */
     fun getApiService(prefsDao: PrefsDao) =
         mApiService ?: createApiService(prefsDao).apply { mApiService = this }
 }

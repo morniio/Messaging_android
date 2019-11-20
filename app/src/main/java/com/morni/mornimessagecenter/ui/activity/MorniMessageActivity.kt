@@ -6,9 +6,15 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.integration.Intents
+import com.morni.mornimessagecenter.integration.Intents.Companion.ACCESS_TOKEN
+import com.morni.mornimessagecenter.integration.Intents.Companion.APP_VERSION
+import com.morni.mornimessagecenter.integration.Intents.Companion.BASE_URL
+import com.morni.mornimessagecenter.integration.Intents.Companion.MESSAGE_ID
+import com.morni.mornimessagecenter.ui.fragment.MorniMessageListFragmentDirections.*
 import com.morni.mornimessagecenter.util.showAlertDialog
 
 /**
@@ -17,49 +23,38 @@ import com.morni.mornimessagecenter.util.showAlertDialog
 
 class MorniMessageActivity : AppCompatActivity() {
 
-    private val prefsDao by lazy { Injection.providePreference(this) }
-
     override fun attachBaseContext(base: Context) =
         super.attachBaseContext(Injection.provideLocalHelper(base).onAttach())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_morni_message)
-        prefsDao.baseUrl = "https://api-dev.zayed.io/api/zayed/mobile/v1/"
-        prefsDao.accessToken = "Ix3j0G559KHRV2pEUwRh"
-        prefsDao.language = "en"
-        prefsDao.appVersion = "1.2.1"
-        prefsDao.pageSize = 10
-        //initializeFromIntent(intent)
+
+
+        initializeFromIntent(intent)
     }
 
-    private fun initializeFromIntent(intent: Intent?) {
-        if (intent != null) {
-            if (intent.extras?.containsKey(Intents.BASE_URL) == true) {
-                prefsDao.baseUrl = intent.getStringExtra(Intents.BASE_URL)
-            }
-            if (intent.extras?.containsKey(Intents.ACCESS_TOKEN) == true) {
-                prefsDao.accessToken = intent.getStringExtra(Intents.ACCESS_TOKEN)
-            }
-            if (intent.extras?.containsKey(Intents.LANGUAGE) == true) {
-                prefsDao.language = intent.getStringExtra(Intents.LANGUAGE)
-            }
-            if (intent.extras?.containsKey(Intents.APP_VERSION) == true) {
-                prefsDao.appVersion = intent.getStringExtra(Intents.APP_VERSION)
-            }
-            if (intent.extras?.containsKey(Intents.PAGE_SIZE) == true) {
-                prefsDao.pageSize = intent.getIntExtra(Intents.PAGE_SIZE, Intents.DEFAULT_PAGE_SIZE)
-            }
-        } else {
-            // this case will happen when user start library without use Integration class
+    private fun initializeFromIntent(intent: Intent?) = intent.run {
+        if(!hasValueOf(BASE_URL)||!hasValueOf(ACCESS_TOKEN)||!hasValueOf(APP_VERSION))
             showAlertDialog(
-                this,
+                this@MorniMessageActivity,
                 getString(R.string.missing_data),
                 getString(R.string.not_use_integration_error_msg),
-                DialogInterface.OnClickListener { _, _ -> this.finish() }
+                DialogInterface.OnClickListener { _, _ -> this@MorniMessageActivity.finish() }
+            )
+        // This is to open details screen when user passes message id only.
+        getValueOf(MESSAGE_ID)?.let {
+            findNavController(R.id.fragment).navigate(
+                actionOpenDetails().setMessageId(it)
             )
         }
     }
+
+    private fun Intent?.hasValueOf(key: String) =
+        this != null && extras?.containsKey(key) == true
+
+    private fun Intent?.getValueOf(key: String) =
+        if(!hasValueOf(key)) null else this?.getLongExtra(MESSAGE_ID, 0)
 
     fun unAuthorizedLogin() {
         val intent = Intent(Intents.START_ACTION)

@@ -6,26 +6,33 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.morni.mornimessagecenter.R
+import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
+import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.showAlertDialog
-
 
 /**
  * Created by Rami El-bouhi on 17,September,2019
  */
 class IntentIntegrator(private val activity: Activity) {
 
+    private val prefsDao by lazy { Injection.providePreference(activity) }
+
     private var defaultActivity: Class<*>? = null
     private val moreExtras = HashMap<String, Any>()
     private var fragment: Fragment? = null
     private var requestCode: Int = REQUEST_CODE
+
     private var baseUrl: String? = null
     private var accessToken: String? = null
     private var appVersion: String? = null
+    private var language: String? = null
+    private var pageSize: Int? = null
+    private var messageId: Long? = null
 
 
     companion object {
-        val REQUEST_CODE: Int = 0x0000c0de
+        const val REQUEST_CODE: Int = 0x0000c0de
 
         /**
          *
@@ -89,10 +96,18 @@ class IntentIntegrator(private val activity: Activity) {
                 activity.getString(R.string.missing_data),
                 errorMsg
                 ,
-                DialogInterface.OnClickListener { dialogInterface: DialogInterface?, i: Int -> dialogInterface?.dismiss() }
+                DialogInterface.OnClickListener { dialogInterface: DialogInterface?, _: Int -> dialogInterface?.dismiss() }
             )
         } else {
-            // all mandatory field entered successfully so open message activity
+            // Initilize preference and open main activity.
+            prefsDao.apply {
+                baseUrl = this@IntentIntegrator.baseUrl
+                accessToken = this@IntentIntegrator.accessToken
+                appVersion = this@IntentIntegrator.appVersion
+                language = this@IntentIntegrator.language ?: LocaleHelper.DEFAULT_LANGUAGE
+                pageSize = this@IntentIntegrator.pageSize ?: Intents.DEFAULT_PAGE_SIZE
+                messageId = this@IntentIntegrator.messageId
+            }
             startActivityForResult(createIntent(), requestCode)
         }
     }
@@ -126,6 +141,7 @@ class IntentIntegrator(private val activity: Activity) {
 
     fun setLanguage(language: String): IntentIntegrator {
         if (language.isNotEmpty()) {
+            this.language = language
             addExtra(Intents.LANGUAGE, language)
         }
         return this
@@ -141,7 +157,19 @@ class IntentIntegrator(private val activity: Activity) {
 
     fun setPageSize(pageSize: Int): IntentIntegrator {
         if (pageSize > 0) {
+            this.pageSize = pageSize
             addExtra(Intents.PAGE_SIZE, pageSize)
+        }
+        return this
+    }
+
+    /**
+     * This will be set if user wants to open details of the message by its id.
+     */
+    fun setMessageIdToOpen(messageId: Long): IntentIntegrator {
+        if (messageId > 0) {
+            this.messageId = messageId
+            addExtra(Intents.MESSAGE_ID, messageId)
         }
         return this
     }
@@ -151,47 +179,22 @@ class IntentIntegrator(private val activity: Activity) {
         return this
     }
 
-
-    /*
-    */
-    /**
-     * Change the request code that is used for the Intent. If it is changed, it is the caller's
-     * responsibility to check the request code from the result intent.
-     *
-     * @param requestCode the new request code
-     * @return this
-     *//*
-    fun setRequestCode(requestCode: Int): IntentIntegrator {
-        if (requestCode <= 0 || requestCode > 0x0000ffff) {
-            throw IllegalArgumentException("requestCode out of range");
-        }
-        this.requestCode = requestCode
-        return this
-    }*/
-
-    private fun createIntent(): Intent {
-        val intent = Intent(activity, getDefaultActivity())
-        intent.action = Intents.START_ACTION
-        attachMoreExtras(intent)
-        return intent
-    }
-
-
-    private fun attachMoreExtras(intent: Intent) {
+    private fun createIntent() = Intent(activity, getDefaultActivity()).apply {
+        action = Intents.START_ACTION
         for ((key, value) in moreExtras) { // Kind of hacky
             when (value) {
-                is Int -> intent.putExtra(key, value)
-                is Long -> intent.putExtra(key, value)
-                is Boolean -> intent.putExtra(key, value)
-                is Double -> intent.putExtra(key, value)
-                is Float -> intent.putExtra(key, value)
-                is Bundle -> intent.putExtra(key, value)
-                is IntArray -> intent.putExtra(key, value)
-                is LongArray -> intent.putExtra(key, value)
-                is BooleanArray -> intent.putExtra(key, value)
-                is DoubleArray -> intent.putExtra(key, value)
-                is FloatArray -> intent.putExtra(key, value)
-                else -> intent.putExtra(key, value.toString())
+                is Int -> putExtra(key, value)
+                is Long -> putExtra(key, value)
+                is Boolean -> putExtra(key, value)
+                is Double -> putExtra(key, value)
+                is Float -> putExtra(key, value)
+                is Bundle -> putExtra(key, value)
+                is IntArray -> putExtra(key, value)
+                is LongArray -> putExtra(key, value)
+                is BooleanArray -> putExtra(key, value)
+                is DoubleArray -> putExtra(key, value)
+                is FloatArray -> putExtra(key, value)
+                else -> putExtra(key, value.toString())
             }
         }
     }
@@ -210,6 +213,4 @@ class IntentIntegrator(private val activity: Activity) {
             activity.startActivityForResult(intent, code)
         }
     }
-
-
 }

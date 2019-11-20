@@ -47,6 +47,12 @@ class PrefsDao constructor(context: Context) {
             sharedPreferences[PAGE_SIZE] = value
         }
 
+    var messageId: Long?
+        get() = sharedPreferences[MESSAGE_ID]
+        set(value) {
+            sharedPreferences[MESSAGE_ID] = value
+        }
+
     fun clear() = sharedPreferences.edit().clear().apply()
 
     companion object {
@@ -58,6 +64,7 @@ class PrefsDao constructor(context: Context) {
         private const val LANGUAGE = "language"
         private const val APP_VERSION = "app_version"
         private const val PAGE_SIZE = "page_size"
+        private const val MESSAGE_ID = "message_id"
 
         fun getInstance(context: Context): PrefsDao
                 = mInstance ?: PrefsDao(context).apply { mInstance = this }

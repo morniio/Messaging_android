@@ -15,6 +15,9 @@ object Injection {
         providePreference(context)
     )
 
+    /**
+     * Singleton function to provide one instance of preference through life of the application.
+     */
     fun providePreference(context: Context) = PrefsDao.getInstance(context)
 
     fun provideLocalHelper(context: Context) = LocaleHelper(providePreference(context), context)

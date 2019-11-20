@@ -31,11 +31,11 @@ class AuthInterceptor constructor(private val prefsDao: PrefsDao) : Interceptor 
 
     private fun addHeaders(requestBuilder: Request.Builder, prefsDao: PrefsDao) {
         requestBuilder.addHeader(AUTHORIZATION, "$BEARER ${prefsDao.accessToken}")
-        requestBuilder.addHeader(ACCEPT_LANGUAGE, prefsDao.language ?: LocaleHelper.DEFAULT_LANGUAGE)
+        requestBuilder.addHeader(ACCEPT_LANGUAGE, prefsDao.language)
         requestBuilder.addHeader(CONTENT_TYPE, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(ACCEPT_ENCODING, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(ACCEPT, CONTENT_TYPE_VALUE)
         requestBuilder.addHeader(PLATFORM, ANDROID)
-        requestBuilder.addHeader(APP_VERSION, prefsDao.appVersion ?: "")
+        requestBuilder.addHeader(APP_VERSION, prefsDao.appVersion)
     }
 }
