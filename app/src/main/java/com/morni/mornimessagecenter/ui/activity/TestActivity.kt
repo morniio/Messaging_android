@@ -18,7 +18,7 @@ class TestActivity : AppCompatActivity() {
          *
          * This is only for testing purposes.
          */
-        IntentIntegrator(MessagingApp.getInstance()).apply {
+        IntentIntegrator(this).apply {
             setBaseUrl("https://api-dev.zayed.io/api/zayed/mobile/v1/")
             setAccessToken("SmA832JezEKzW6c4xAi0")
             setAppVersion("1.2.1")
@@ -28,18 +28,4 @@ class TestActivity : AppCompatActivity() {
             initiate()
         }
     }
-
-/*    companion object {
-        fun test() {
-            IntentIntegrator(this).apply {
-                setBaseUrl("https://api-dev.zayed.io/api/zayed/mobile/v1/")
-                setAccessToken("SmA832JezEKzW6c4xAi0")
-                setAppVersion("1.2.1")
-                setLanguage("ar")
-                setPageSize(10)
-                //setMessageId(3977)
-                initiate()
-            }
-        }
-    }*/
 }
