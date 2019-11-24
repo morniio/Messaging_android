@@ -11,17 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.TestActivity">
 
+        <!-- For testing activity -->
+        <activity android:name=".ui.activity.TestActivity"
+            android:screenOrientation="portrait">
         </activity>
+
+        <!-- It is important to comment the intent filter before releasing, otherwise after merging this manifest and application's manifest,
+             there will be 2 intent launchers and 2 app icons in the device -->
         <activity
             android:name=".ui.activity.MorniMessageActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
+      <!--      <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

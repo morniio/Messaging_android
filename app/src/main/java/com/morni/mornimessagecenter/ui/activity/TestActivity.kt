@@ -12,14 +12,12 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test)
 
         /**
-         * To do your test, please make this activity as the launcher activity from the manifest and
-         * uncomment the bellow lines.
-         *
+         * To do your test, please make this activity as the launcher activity from the manifest.
          * This is only for testing purposes.
          */
         IntentIntegrator(this).apply {
             setBaseUrl("https://api-dev.zayed.io/api/zayed/mobile/v1/")
-            setAccessToken("mkMgDwWQeXobKEE3RlKy")
+            setAccessToken("cJZ7DR12qqg0H4FnkR6o")
             setAppVersion("1.2.1")
             setLanguage("ar")
             setPageSize(10)
