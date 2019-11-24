@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
@@ -20,7 +19,6 @@ class IntentIntegrator(private val activity: Activity) {
 
     private var defaultActivity: Class<*>? = null
     private val moreExtras = HashMap<String, Any>()
-    private var fragment: Fragment? = null
     private var requestCode: Int = REQUEST_CODE
 
     private var baseUrl: String? = null
@@ -99,7 +97,7 @@ class IntentIntegrator(private val activity: Activity) {
                 DialogInterface.OnClickListener { dialogInterface: DialogInterface?, _: Int -> dialogInterface?.dismiss() }
             )
         } else {
-            // Initilize preference and open main activity.
+            // Initilize preference and open main context.
             prefsDao.apply {
                 baseUrl = this@IntentIntegrator.baseUrl
                 accessToken = this@IntentIntegrator.accessToken
@@ -108,19 +106,8 @@ class IntentIntegrator(private val activity: Activity) {
                 pageSize = this@IntentIntegrator.pageSize ?: Intents.DEFAULT_PAGE_SIZE
                 messageId = this@IntentIntegrator.messageId
             }
-            startActivityForResult(createIntent(), requestCode)
+            activity.startActivityForResult(createIntent(), requestCode)
         }
-    }
-
-    /**
-     * @param fragment [Fragment] invoking the integration.
-     * [.startActivityForResult] will be called on the [Fragment] instead
-     * of an [Activity]
-     */
-    fun forFragment(fragment: Fragment): IntentIntegrator {
-        val integrator = IntentIntegrator(fragment.activity as Activity)
-        integrator.fragment = fragment
-        return integrator
     }
 
     fun setBaseUrl(baseUrl: String): IntentIntegrator {
@@ -200,17 +187,7 @@ class IntentIntegrator(private val activity: Activity) {
     }
 
     private fun getDefaultActivity(): Class<*> {
-        if (defaultActivity == null) {
-            defaultActivity = MorniMessageActivity::class.java
-        }
+        if (defaultActivity == null) defaultActivity = MorniMessageActivity::class.java
         return defaultActivity as Class<*>
-    }
-
-    private fun startActivityForResult(intent: Intent, code: Int) {
-        if (fragment != null) {
-            fragment!!.startActivityForResult(intent, code)
-        } else {
-            activity.startActivityForResult(intent, code)
-        }
     }
 }
