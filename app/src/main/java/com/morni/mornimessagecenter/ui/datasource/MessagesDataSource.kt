@@ -19,14 +19,14 @@ import java.io.IOException
 class MessagesDataSource(
     private val apiService: ApiService,
     private val compositeDisposable: CompositeDisposable
-) : PageKeyedDataSource<Int, MorniMessage>() {
+) : PageKeyedDataSource<Int, MorniMessage?>() {
 
     var responseLiveData: MutableLiveData<MorniApiStatus> = MutableLiveData()
     private var retryCompletable: Completable? = null
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, MorniMessage>
+        callback: LoadInitialCallback<Int, MorniMessage?>
     ) {
         compositeDisposable.add(
             apiService.getMessages(1)
@@ -34,10 +34,10 @@ class MessagesDataSource(
                 .subscribe(
                     { response ->
                         responseLiveData.postValue(MorniApiStatus.INITIAL_SUCCESS)
-                        if (response.morniMessages.isEmpty()) {
+                        if (response.morniMessages.isNullOrEmpty()) {
                             responseLiveData.postValue(MorniApiStatus.EMPTY_DATA)
                         }
-                        callback.onResult(response.morniMessages, null, 2)
+                        response?.morniMessages?.let { callback.onResult(it, null, 2) }
 
                     },
                     { error ->
@@ -60,7 +60,7 @@ class MessagesDataSource(
         )
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage?>) {
         compositeDisposable.add(
             apiService.getMessages(params.key)
                 .doOnSubscribe { responseLiveData.postValue(MorniApiStatus.LOADING) }
@@ -68,7 +68,7 @@ class MessagesDataSource(
                     { response ->
                         responseLiveData.postValue(MorniApiStatus.SUCCESS)
                         if (response.meta?.hasMoreItems == true) {
-                            callback.onResult(response.morniMessages, params.key + 1)
+                            response?.morniMessages?.let { callback.onResult(it, params.key + 1) }
                         }
                     },
                     { error ->
@@ -91,7 +91,7 @@ class MessagesDataSource(
         )
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage>) = Unit
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MorniMessage?>) = Unit
 
     fun retry() {
         if (retryCompletable != null) {

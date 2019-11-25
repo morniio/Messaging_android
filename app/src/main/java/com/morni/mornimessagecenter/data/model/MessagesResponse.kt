@@ -10,5 +10,5 @@ class MessagesResponse {
     var message: String? = null
     var meta: Meta? = null
     @Json(name = "data")
-    lateinit var morniMessages: List<MorniMessage>
+    var morniMessages: List<MorniMessage>? = null
 }
