@@ -17,7 +17,7 @@ class TestActivity : AppCompatActivity() {
          */
         IntentIntegrator(this).apply {
             setBaseUrl("https://api-dev.zayed.io/api/zayed/mobile/v1/")
-            setAccessToken("cJZ7DR12qqg0H4FnkR6o")
+            setAccessToken("vEixUi7FjAInjKpJ2e8K")
             setAppVersion("1.2.1")
             setLanguage("ar")
             setPageSize(10)

@@ -17,7 +17,7 @@ object RetroClient {
 
     private var mApiService: ApiService? = null
 
-    private fun createApiService(prefsDao: PrefsDao): ApiService {
+    public fun getApiService(prefsDao: PrefsDao): ApiService {
         val okHttpClient = OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(prefsDao))
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -39,10 +39,4 @@ object RetroClient {
 
          return retrofit.create(ApiService::class.java)
     }
-
-    /**
-     * Singleton function to provide one instance of the api service through life of the application.
-     */
-    fun getApiService(prefsDao: PrefsDao) =
-        mApiService ?: createApiService(prefsDao).apply { mApiService = this }
 }
