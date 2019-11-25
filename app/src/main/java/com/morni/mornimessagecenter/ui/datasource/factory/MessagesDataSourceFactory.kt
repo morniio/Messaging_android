@@ -16,7 +16,7 @@ class MessagesDataSourceFactory(private val compositeDisposable: CompositeDispos
     //lateinit var messagesDataSource: MessagesDataSource
     val messagesDataSourceLiveData = MutableLiveData<MessagesDataSource>()
 
-    override fun create(): DataSource<Int, MorniMessage> {
+    override fun create(): DataSource<Int, MorniMessage?> {
         val messagesDataSource = MessagesDataSource(apiService, compositeDisposable)
         messagesDataSourceLiveData.postValue(messagesDataSource)
         return messagesDataSource
