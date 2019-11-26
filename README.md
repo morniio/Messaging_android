@@ -29,13 +29,12 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 ![messages_list](https://user-images.githubusercontent.com/55134740/65234606-2d098a80-dad5-11e9-8580-d93ceef3c433.png) ![message_details](https://user-images.githubusercontent.com/55134740/65234605-2d098a80-dad5-11e9-9698-1cdc22381ecb.png) 
 
 ## Programming Practices Followed
--	Kotlin Programming Language
--	MVVM
--	AndroidX Support Library
+-  Kotlin Programming Language
+-  MVVM
+-  AndroidX Support Library
 -  AndroidX Architecture Components(ViewModels, LiveData, Navigation, Paging)
 -  AndroidX Data Binding
 -  RxJava2
--  Koin for Dependency Injection
 -  Retrofit2 with Okhttp
 
 ## Pre-requisites
@@ -110,6 +109,23 @@ Step 2: Add dependencies
     	<artifactId>Messaging_android</artifactId>
         <version>morni_lib_version</version>
     </dependency>
+    
+### Proguard Configuration
+
+Strep 1: Add the following lines to the root gradle file (build.gradle: Project: ...): to be able to generate signed apk and stop proguard issues.
+
+buildscript {
+configurations.all {
+    resolutionStrategy {
+        force 'net.sf.proguard:proguard-gradle:6.2.0' //6.2.0 is latest ProGuard Gradle version.
+	}
+  }
+}
+
+Step 2: Add the following line to proguard rules file:
+
+-keepclassmembers enum * { *; }
+
 
 ## Usage
 
