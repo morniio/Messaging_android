@@ -112,19 +112,20 @@ Step 2: Add dependencies
     
 ### Proguard Configuration
 
-Strep 1: Add the following lines to the root gradle file (build.gradle: Project: ...): to be able to generate signed apk and stop proguard issues.
+Strep 1: Add the following lines to the root gradle file (build.gradle: Project: ...), to be able to generate signed apk and stop proguard issues.
 
-buildscript {
-configurations.all {
-    resolutionStrategy {
-        force 'net.sf.proguard:proguard-gradle:6.2.0' //6.2.0 is latest ProGuard Gradle version.
+	buildscript {
+   	    ...
+	    configurations.all {
+		resolutionStrategy {
+		    force 'net.sf.proguard:proguard-gradle:6.2.0' //6.2.0 is the latest ProGuard Gradle version.
+		}
+	    }
 	}
-  }
-}
 
 Step 2: Add the following line to proguard rules file:
 
--keepclassmembers enum * { *; }
+	-keepclassmembers enum * { *; }
 
 
 ## Usage
