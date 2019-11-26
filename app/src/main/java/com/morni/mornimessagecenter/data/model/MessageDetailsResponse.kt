@@ -1,14 +1,21 @@
 package com.morni.mornimessagecenter.data.model
 
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by Rami El-bouhi on 17,September,2019
  */
 class MessageDetailsResponse {
 
-    val morniApiStatus: MorniApiStatus
-    var status: String? = null
+    @SerializedName("message")
     var message: String? = null
+
+    @SerializedName("data")
     var data: MorniMessage?
+
+    @Expose
+    val morniApiStatus: MorniApiStatus
 
     constructor(morniApiStatus: MorniApiStatus, message: String?, morniMessage: MorniMessage?) {
         this.morniApiStatus = morniApiStatus

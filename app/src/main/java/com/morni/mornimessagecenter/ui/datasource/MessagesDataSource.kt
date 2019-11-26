@@ -38,7 +38,6 @@ class MessagesDataSource(
                             responseLiveData.postValue(MorniApiStatus.EMPTY_DATA)
                         }
                         response?.morniMessages?.let { callback.onResult(it, null, 2) }
-
                     },
                     { error ->
                         if (error is HttpException) {
