@@ -2,22 +2,18 @@ package com.morni.mornimessagecenter.data.remote
 
 import com.morni.mornimessagecenter.BuildConfig
 import com.morni.mornimessagecenter.util.PrefsDao
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
  */
 object RetroClient {
 
-    private var mApiService: ApiService? = null
-
-    public fun getApiService(prefsDao: PrefsDao): ApiService {
+    fun getApiService(prefsDao: PrefsDao): ApiService {
         val okHttpClient = OkHttpClient().newBuilder()
             .addInterceptor(AuthInterceptor(prefsDao))
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -25,18 +21,14 @@ object RetroClient {
             })
             .build()
 
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-
         val retrofit = Retrofit
             .Builder()
             .baseUrl(prefsDao.baseUrl!!)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-         return retrofit.create(ApiService::class.java)
+        return retrofit.create(ApiService::class.java)
     }
 }

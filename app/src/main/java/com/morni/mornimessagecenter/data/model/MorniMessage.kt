@@ -1,22 +1,26 @@
 package com.morni.mornimessagecenter.data.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Rami El-bouhi on 10,September,2019
  */
-class MorniMessage{
-    @Json(name = "id") var id: Long? = 0
-    var title: String? = ""
-    @Json(name = "subtitle") var subTitle: String? = ""
-    var body: String? = null ?: ""
-    @Json(name = "created_at") var createdAt: String? = ""
-    @Json(name = "read") var isRead: Boolean? = false
+data class MorniMessage(
+    @SerializedName("id")
+    var id: Long? = 0,
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other?.javaClass != javaClass) return false
+    @SerializedName("title")
+    var title: String? = "",
 
-        return true
-    }
-}
+    @SerializedName("subtitle")
+    var subTitle: String? = "",
+
+    @SerializedName("body")
+    var body: String? = null ?: "",
+
+    @SerializedName("created_at")
+    var createdAt: String? = "",
+
+    @SerializedName("read")
+    var isRead: Boolean? = false
+)
