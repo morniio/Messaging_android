@@ -83,7 +83,7 @@ Step 2: Add it in your root build.gradle at the end of repositories:
 
 ### Or Maven
 
-Strep 1: Add the token to $HOME/.m2/settings.xml as the username
+Step 1: Add the token to $HOME/.m2/settings.xml as the username
 
     <settings>
       <servers>
@@ -234,7 +234,7 @@ List of features ready
 -   Display the full content of each message
 
 ## Status
-Project is: under testing
+Project is: released to production.
 
 ## License
 
