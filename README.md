@@ -83,7 +83,7 @@ Step 2: Add it in your root build.gradle at the end of repositories:
 
 ### Or Maven
 
-Strep 1: Add the token to $HOME/.m2/settings.xml as the username
+Step 1: Add the token to $HOME/.m2/settings.xml as the username
 
     <settings>
       <servers>
@@ -109,6 +109,24 @@ Step 2: Add dependencies
     	<artifactId>Messaging_android</artifactId>
         <version>morni_lib_version</version>
     </dependency>
+    
+### Proguard Configuration
+
+Strep 1: Add the following lines to the root gradle file (build.gradle: Project: ...), to be able to generate signed apk and stop proguard issues.
+
+	buildscript {
+   	    ...
+	    configurations.all {
+		resolutionStrategy {
+		    force 'net.sf.proguard:proguard-gradle:6.2.0' //6.2.0 is the latest ProGuard Gradle version.
+		}
+	    }
+	}
+
+Step 2: Add the following line to proguard rules file:
+
+	-keepclassmembers enum * { *; }
+
 
 ## Usage
 
@@ -216,7 +234,7 @@ List of features ready
 -   Display the full content of each message
 
 ## Status
-Project is: under testing
+Project is: released to production.
 
 ## License
 
