@@ -3,7 +3,7 @@ package com.morni.mornimessagecenter.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.morni.mornimessagecenter.R
-import com.morni.mornimessagecenter.integration.IntentIntegrator
+import com.morni.mornimessagecenter.integration.MorniMessagesSdk
 
 class TestActivity : AppCompatActivity() {
 
@@ -15,14 +15,14 @@ class TestActivity : AppCompatActivity() {
          * To do your test, please make this activity as the launcher activity from the manifest.
          * This is only for testing purposes.
          */
-        IntentIntegrator(this).apply {
-            setBaseUrl("https://api-dev.zayed.io/api/zayed/mobile/v1/")
-            setAccessToken("Xsmsbm_rL5RTTn-TcOYY")
-            setAppVersion("1.2.1")
+        MorniMessagesSdk(this).apply {
+            setBaseUrl("///") // put base url here..
+            setAccessToken("lLBCiQrDdEZ9OtQjGxzS")
+            setAppVersion("1.3.0")
             setLanguage("ar")
             setPageSize(10)
-            //setMessageId(3977)
-            initiate()
+            //setMessageId(6936)
+            initiate()?.showMessages()
         }
     }
 }

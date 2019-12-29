@@ -1,7 +1,7 @@
 package com.morni.mornimessagecenter.data.remote
 
 import com.morni.mornimessagecenter.BuildConfig
-import com.morni.mornimessagecenter.util.PrefsDao
+import com.morni.mornimessagecenter.data.local.PrefsDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

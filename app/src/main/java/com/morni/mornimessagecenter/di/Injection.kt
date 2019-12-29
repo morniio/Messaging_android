@@ -3,8 +3,8 @@ package com.morni.mornimessagecenter.di
 import android.content.Context
 import com.morni.mornimessagecenter.data.remote.RetroClient
 import com.morni.mornimessagecenter.util.LocaleHelper
-import com.morni.mornimessagecenter.util.PrefsDao
-import com.morni.mornimessagecenter.util.Repository
+import com.morni.mornimessagecenter.data.local.PrefsDao
+import com.morni.mornimessagecenter.data.Repository
 import com.morni.mornimessagecenter.util.ResourceProvider
 
 object Injection {

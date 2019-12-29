@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.data.model.MessageDetailsResponse
-import com.morni.mornimessagecenter.util.Repository
+import com.morni.mornimessagecenter.data.Repository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

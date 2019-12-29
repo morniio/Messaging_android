@@ -9,7 +9,7 @@ import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniMessage
 import com.morni.mornimessagecenter.ui.datasource.MessagesDataSource
 import com.morni.mornimessagecenter.ui.datasource.factory.MessagesDataSourceFactory
-import com.morni.mornimessagecenter.util.Repository
+import com.morni.mornimessagecenter.data.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
