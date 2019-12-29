@@ -29,13 +29,13 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 ![messages_list](https://user-images.githubusercontent.com/55134740/65234606-2d098a80-dad5-11e9-8580-d93ceef3c433.png) ![message_details](https://user-images.githubusercontent.com/55134740/65234605-2d098a80-dad5-11e9-9698-1cdc22381ecb.png) 
 
 ## Programming Practices Followed
--  Kotlin Programming Language
--  MVVM
--  AndroidX Support Library
--  AndroidX Architecture Components(ViewModels, LiveData, Navigation, Paging)
--  AndroidX Data Binding
--  RxJava2
--  Retrofit2 with Okhttp
+- Kotlin Programming Language.
+- MVVM.
+- AndroidX Support Library.
+- AndroidX Architecture Components(ViewModels, LiveData, Navigation, Paging).
+- RxJava2.
+- Koin for Dependency Injection.
+- Retrofit2 with Okhttp.
 
 ## Pre-requisites
 

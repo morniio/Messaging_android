@@ -1,8 +1,9 @@
-package com.morni.mornimessagecenter.util
+package com.morni.mornimessagecenter.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.morni.mornimessagecenter.integration.Intents
+import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.extentions.get
 import com.morni.mornimessagecenter.util.extentions.set
 
@@ -67,6 +68,7 @@ class PrefsDao constructor(context: Context) {
         private const val MESSAGE_ID = "message_id"
 
         fun getInstance(context: Context): PrefsDao
-                = mInstance ?: PrefsDao(context).apply { mInstance = this }
+                = mInstance
+            ?: PrefsDao(context).apply { mInstance = this }
     }
 }
