@@ -2,6 +2,7 @@ package com.morni.mornimessagecenter.data.remote
 
 import com.morni.mornimessagecenter.data.model.MessageDetailsResponse
 import com.morni.mornimessagecenter.data.model.MessagesResponse
+import com.morni.mornimessagecenter.data.model.UnreadMessagesResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,11 +13,12 @@ import retrofit2.http.Query
  */
 interface ApiService {
 
-
     @GET("management_messages")
     fun getMessages(@Query("page") page: Int): Single<MessagesResponse>
 
     @GET("management_messages/{id}")
     fun getMessageDetails(@Path(value = "id") id: Long): Single<MessageDetailsResponse>
 
+    @GET("management_messages/total_unread")
+    fun getTotalUnreadMessages(): Single<UnreadMessagesResponse>
 }

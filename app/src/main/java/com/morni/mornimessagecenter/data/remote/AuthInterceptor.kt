@@ -1,7 +1,6 @@
 package com.morni.mornimessagecenter.data.remote
 
-import com.morni.mornimessagecenter.util.LocaleHelper
-import com.morni.mornimessagecenter.util.PrefsDao
+import com.morni.mornimessagecenter.data.local.PrefsDao
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

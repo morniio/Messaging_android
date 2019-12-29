@@ -8,12 +8,13 @@ import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.util.LocaleHelper
+import com.morni.mornimessagecenter.data.MessagesServiceProvider
 import com.morni.mornimessagecenter.util.showAlertDialog
 
 /**
  * Created by Rami El-bouhi on 17,September,2019
  */
-class IntentIntegrator(private val activity: Activity) {
+class MorniMessagesSdk(private val activity: Activity) {
 
     private val prefsDao by lazy { Injection.providePreference(activity) }
 
@@ -28,143 +29,102 @@ class IntentIntegrator(private val activity: Activity) {
     private var pageSize: Int? = null
     private var messageId: Long? = null
 
-
-    companion object {
-        const val REQUEST_CODE: Int = 0x0000c0de
-
-        /**
-         *
-         * Call this from your [Activity]'s
-         * [Activity.onActivityResult] method.
-         *
-         *
-         * This checks that the requestCode is equal to the default REQUEST_CODE.
-         *
-         * @param requestCode request code from `onActivityResult()`
-         * @param resultCode  result code from `onActivityResult()`
-         * @param intent      [Intent] from `onActivityResult()`
-         * @return null if the event handled here was not related to this class, or
-         * else an [IntentResult] containing the result of the scan. If the user cancelled scanning,
-         * the fields will be null.
-         */
-        fun parseActivityResult(requestCode: Int, resultCode: Int, intent: Intent?): IntentResult? {
-            return if (requestCode == REQUEST_CODE) {
-                parseActivityResult(resultCode, intent)
-            } else null
-        }
-
-        /**
-         * Parse activity result, without checking the request code.
-         *
-         * @param resultCode result code from `onActivityResult()`
-         * @param intent     [Intent] from `onActivityResult()`
-         * @return an [IntentResult] containing the result of the scan. If the user cancelled scanning,
-         * the fields will be null.
-         */
-        fun parseActivityResult(resultCode: Int, intent: Intent?): IntentResult {
-            if (resultCode == Activity.RESULT_OK) {
-                val status = intent?.getIntExtra(Intents.STATUS, 0)
-                val message = intent?.getStringExtra(Intents.MESSAGE)
-                return IntentResult(status, message)
-            }
-            return IntentResult(0, null)
-        }
-    }
-
-    fun initiate() {
-        // check entered attributes if all mandatory fields are entered
+    /**
+     * Check entered attributes if all mandatory fields are entered.
+     * returns null if validation fails, otherwise completes initiating preference.
+     */
+    fun initiate(): MorniMessagesSdk? = apply {
         val errorsList = ArrayList<String>()
-        if (baseUrl.isNullOrBlank()) {
+
+        if (baseUrl.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.base_url)} ${activity.getString(R.string.is_missing)}")
-        }
-        if (accessToken.isNullOrBlank()) {
+
+        if (accessToken.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.access_token)} ${activity.getString(R.string.is_missing)}")
-        }
-        if (appVersion.isNullOrBlank()) {
+
+        if (appVersion.isNullOrBlank())
             errorsList.add(
                 "${activity.getString(R.string.application_version)} ${activity.getString(
                     R.string.is_missing
                 )}"
             )
-        }
-        if (errorsList.size > 0) {
-            val errorMsg = errorsList.joinToString("\n")
+        if (errorsList.isNotEmpty()) {
             showAlertDialog(
                 activity,
                 activity.getString(R.string.missing_data),
-                errorMsg
-                ,
-                DialogInterface.OnClickListener { dialogInterface: DialogInterface?, _: Int -> dialogInterface?.dismiss() }
+                errorsList.joinToString("\n"),
+                DialogInterface.OnClickListener { dialogInterface: DialogInterface?, _: Int ->
+                    dialogInterface?.dismiss()
+                }
             )
+            return null
         } else {
-            // Initilize preference and open main context.
             prefsDao.apply {
-                baseUrl = this@IntentIntegrator.baseUrl
-                accessToken = this@IntentIntegrator.accessToken
-                appVersion = this@IntentIntegrator.appVersion
-                language = this@IntentIntegrator.language ?: LocaleHelper.DEFAULT_LANGUAGE
-                pageSize = this@IntentIntegrator.pageSize ?: Intents.DEFAULT_PAGE_SIZE
-                messageId = this@IntentIntegrator.messageId
+                baseUrl = this@MorniMessagesSdk.baseUrl
+                accessToken = this@MorniMessagesSdk.accessToken
+                appVersion = this@MorniMessagesSdk.appVersion
+                language = this@MorniMessagesSdk.language ?: LocaleHelper.DEFAULT_LANGUAGE
+                pageSize = this@MorniMessagesSdk.pageSize ?: Intents.DEFAULT_PAGE_SIZE
+                messageId = this@MorniMessagesSdk.messageId
             }
-            activity.startActivityForResult(createIntent(), requestCode)
         }
     }
 
-    fun setBaseUrl(baseUrl: String): IntentIntegrator {
+    fun showMessages()
+            = activity.startActivityForResult(createIntent(), requestCode)
+
+    fun getTotalUnreadMessages(func: (Int?) -> Unit) =
+        MessagesServiceProvider.getTotalUnreadMessages(
+            Injection.provideRepository(activity),
+            func
+        )
+
+    fun setBaseUrl(baseUrl: String) = apply {
         if (baseUrl.isNotEmpty()) {
             this.baseUrl = baseUrl
             addExtra(Intents.BASE_URL, baseUrl)
         }
-        return this
     }
 
-    fun setAccessToken(accessToken: String): IntentIntegrator {
+    fun setAccessToken(accessToken: String) = apply {
         if (accessToken.isNotEmpty()) {
             this.accessToken = accessToken
             addExtra(Intents.ACCESS_TOKEN, accessToken)
         }
-        return this
     }
 
-    fun setLanguage(language: String): IntentIntegrator {
+    fun setLanguage(language: String) = apply {
         if (language.isNotEmpty()) {
             this.language = language
             addExtra(Intents.LANGUAGE, language)
         }
-        return this
     }
 
-    fun setAppVersion(appVersion: String): IntentIntegrator {
+    fun setAppVersion(appVersion: String) = apply {
         if (appVersion.isNotEmpty()) {
             this.appVersion = appVersion
             addExtra(Intents.APP_VERSION, appVersion)
         }
-        return this
     }
 
-    fun setPageSize(pageSize: Int): IntentIntegrator {
+    fun setPageSize(pageSize: Int) = apply {
         if (pageSize > 0) {
             this.pageSize = pageSize
             addExtra(Intents.PAGE_SIZE, pageSize)
         }
-        return this
     }
 
     /**
      * This will be set if user wants to open details of the message by its id directly.
      */
-    fun setMessageId(messageId: Long): IntentIntegrator {
+    fun setMessageId(messageId: Long) = apply {
         if (messageId > 0) {
             this.messageId = messageId
             addExtra(Intents.MESSAGE_ID, messageId)
         }
-        return this
     }
 
-    private fun addExtra(key: String, value: Any): IntentIntegrator {
-        moreExtras[key] = value
-        return this
-    }
+    private fun addExtra(key: String, value: Any) = apply { moreExtras[key] = value }
 
     private fun createIntent() = Intent(activity, getDefaultActivity()).apply {
         action = Intents.START_ACTION
@@ -190,4 +150,19 @@ class IntentIntegrator(private val activity: Activity) {
         if (defaultActivity == null) defaultActivity = MorniMessageActivity::class.java
         return defaultActivity as Class<*>
     }
+
+    companion object {
+        const val REQUEST_CODE: Int = 0x0000c0de
+
+        fun parseActivityResult(
+            requestCode: Int,
+            resultCode: Int,
+            intent: Intent?
+        ) = if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                val status = intent?.getIntExtra(Intents.STATUS, 0)
+                val message = intent?.getStringExtra(Intents.MESSAGE)
+                IntentResult(status, message)
+            }
+            else null
+        }
 }
