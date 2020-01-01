@@ -1,4 +1,4 @@
-
+[![](https://jitpack.io/v/morniio/Messaging_android.svg)](https://jitpack.io/#morniio/Messaging_android)
 # Android Morni Messaging Center
 ### A Sample Library to describe new way of viewing a list of standard messages and its details for Morni users over all Morni Android Apps.  
 
