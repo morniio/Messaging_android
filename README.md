@@ -53,8 +53,8 @@ This library is written in Kotlin, you can use it  in your Android App to get li
 
 ### Current Version
 
-    // latest stable
-    morni_lib_version= '0.1.3'
+    // Put here the latest version
+    morni_lib_version= '1.0.7'
 
 ### Use Gradle
 
@@ -74,7 +74,7 @@ Step 2: Add it in your root build.gradle at the end of repositories:
         }
      }
 
-  Step 3: Add the dependency
+Step 3: Add the dependency
 
     dependencies {
     	...
@@ -118,7 +118,7 @@ Strep 1: Add the following lines to the root gradle file (build.gradle: Project:
    	    ...
 	    configurations.all {
 		resolutionStrategy {
-		    force 'net.sf.proguard:proguard-gradle:6.2.0' //6.2.0 is the latest ProGuard Gradle version.
+		    force 'net.sf.proguard:proguard-gradle:6.2.0' // Put the latest ProGuard Gradle version.
 		}
 	    }
 	}
@@ -130,54 +130,44 @@ Step 2: Add the following line to proguard rules file:
 
 ## Usage
 
-Use "IntentIntegration" class for lunching the library with customize options 
+Use "MorniMessagesSdk" class for lunching the library with customize options 
 
 ### For Kotlin
 
-    val integrator = IntentIntegrator(this) // passing current activity
-    integrator.setBaseUrl("end-point path") // mandatory
-    integrator.setAccessToken("user access token") // mandatory
-    integrator.setLanguage("device language") // optional and the default language is "ar"
-    integrator.setAppVersion("end-point version") // mandatory
-    integrator.setPageSize(10) // optional and the default value is 10
-    integrator.initiate()
-
-
+  	MorniMessagesSdk(this).apply {
+            setBaseUrl("end-point path") // mandatory
+            setAccessToken("user-access-token") // mandatory
+            setAppVersion("app-version") // mandatory
+            setLanguage("device language") // optional and the default language is "ar"
+            setPageSize(10) // optional and the default value is 10
+            initiate()?.showMessages() // To init and show message list screen.
+        }
+	
     // Get the results
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)  
-        if (result != null) {  
-            if (result.status == 401) {  
-                // Un Authorized Login
-                Toast.makeText(this, "Un Authorized Login", Toast.LENGTH_LONG).show()   
-     }  
-        } else {  
-            super.onActivityResult(requestCode, resultCode, data)  
-        }  
+        val result = MorniMessagesSdk.parseActivityResult(requestCode, resultCode, data)  
+        if (result != null) super.onActivityResult(requestCode, resultCode, data)  
     }
 
 ### For Java
 
-    IntentIntegrator integrator = new IntentIntegrator(this); // passing current activity  
-    integrator.setBaseUrl("end-point path"); // mandatory  
-    integrator.setAccessToken("user access token");  // mandatory  
-    integrator.setLanguage("device language"); // optional and the default language is "ar"  
-    integrator.setAppVersion("end-point version");  // mandatory  
-    integrator.setPageSize(10);// optional and the default value is 10  
-    integrator.initiate();
+    MorniMessagesSdk instance = new MorniMessagesSdk(this)
+                .setBaseUrl("end-point path") // mandatory
+                .setAccessToken("user access token") // mandatory
+                .setLanguage("device language") // optional and the default language is "ar"
+                .setAppVersion("device-version") // mandatory
+                .setPageSize(10)  // optional and the default value is 10
+                .initiate();
+		
+        if(instance != null)
+            instance.showMessages();
     
-    
-	// Get the results
+    // Get the results
     @Override  
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {  
-        IntentResult result = IntentIntegrator.Companion.parseActivityResult(requestCode, resultCode, data);  
-        if (result != null) {  
-            if (result.getStatus() == 401) {  
-                Toast.makeText(this, "Un Authorized Login", Toast.LENGTH_LONG).show();  
-            }  
-        } else {  
-            super.onActivityResult(requestCode, resultCode, data);  
-        }  
+        IntentResult result = MorniMessagesSdk.parseActivityResult(requestCode, resultCode, data);  
+        if (result != null) 
+	      super.onActivityResult(requestCode, resultCode, data);  
     }
 ## Customization and advanced options
 
