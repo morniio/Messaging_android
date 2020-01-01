@@ -51,7 +51,6 @@ class MorniMessageListFragment : MorniBaseFragment() {
         (activity as AppCompatActivity).supportActionBar?.title =
             getString(R.string.messages)
 
-        val rvMessages: RecyclerView? = view?.findViewById(R.id.rv_messages)
         swipeContainer = view?.findViewById(R.id.swipe_container)
         btnRetry = view?.findViewById(R.id.btn_retry)
         progressBar = view?.findViewById(R.id.progress_bar)
@@ -66,9 +65,10 @@ class MorniMessageListFragment : MorniBaseFragment() {
                     .navigate(actionOpenDetails().setMessageId(messagesList[position]?.id ?: 0))
             }
         })
+        val rvMessages: RecyclerView? = view?.findViewById(R.id.rv_messages)
         rvMessages?.layoutManager = WrapContentLinearLayoutManager(this.context)
         rvMessages?.adapter = messageListAdapter
-
+        rvMessages?.isMotionEventSplittingEnabled = false // Disable 2 clicks on multiple items at same time to prevent crash with NavController.
         swipeContainer?.setOnRefreshListener { viewModel.refresh() }
         btnRetry?.setOnClickListener { viewModel.refresh() }
 
