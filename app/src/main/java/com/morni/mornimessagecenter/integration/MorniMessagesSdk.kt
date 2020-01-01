@@ -154,6 +154,7 @@ class MorniMessagesSdk(private val activity: Activity) {
     companion object {
         const val REQUEST_CODE: Int = 0x0000c0de
 
+        @JvmStatic
         fun parseActivityResult(
             requestCode: Int,
             resultCode: Int,
