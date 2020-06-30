@@ -6,6 +6,7 @@ import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.extentions.get
 import com.morni.mornimessagecenter.util.extentions.set
+import okhttp3.Interceptor
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
@@ -17,6 +18,12 @@ class PrefsDao constructor(context: Context) {
     init {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
+
+    /**
+     * This will be set when using the library,
+     * and will be used whenever this singleton class is live.
+     */
+    var httpHeader: Interceptor? = null
 
     var accessToken: String?
         get() = sharedPreferences[ACCESS_TOKEN]
@@ -34,12 +41,6 @@ class PrefsDao constructor(context: Context) {
         get() = sharedPreferences[LANGUAGE, LocaleHelper.DEFAULT_LANGUAGE]
         set(value) {
             sharedPreferences[LANGUAGE] = value
-        }
-
-    var appVersion: String?
-        get() = sharedPreferences[APP_VERSION]
-        set(value) {
-            sharedPreferences[APP_VERSION] = value
         }
 
     var pageSize: Int?
@@ -66,9 +67,9 @@ class PrefsDao constructor(context: Context) {
         private const val APP_VERSION = "app_version"
         private const val PAGE_SIZE = "page_size"
         private const val MESSAGE_ID = "message_id"
+        private const val HTTP_HEADER = "http_header"
 
-        fun getInstance(context: Context): PrefsDao
-                = mInstance
+        fun getInstance(context: Context) = mInstance
             ?: PrefsDao(context).apply { mInstance = this }
     }
 }
