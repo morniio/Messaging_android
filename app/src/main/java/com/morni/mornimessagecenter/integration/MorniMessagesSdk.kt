@@ -10,6 +10,7 @@ import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.data.MessagesServiceProvider
 import com.morni.mornimessagecenter.util.showAlertDialog
+import okhttp3.Interceptor
 
 /**
  * Created by Rami El-bouhi on 17,September,2019
@@ -22,6 +23,7 @@ class MorniMessagesSdk(private val activity: Activity) {
     private val moreExtras = HashMap<String, Any>()
     private var requestCode: Int = REQUEST_CODE
 
+    private var httpHeader: Interceptor?= null
     private var baseUrl: String? = null
     private var accessToken: String? = null
     private var appVersion: String? = null
@@ -35,6 +37,9 @@ class MorniMessagesSdk(private val activity: Activity) {
      */
     fun initiate(): MorniMessagesSdk? = apply {
         val errorsList = ArrayList<String>()
+
+        if (httpHeader == null)
+            errorsList.add("${activity.getString(R.string.http_header)} ${activity.getString(R.string.is_missing)}")
 
         if (baseUrl.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.base_url)} ${activity.getString(R.string.is_missing)}")
@@ -60,6 +65,7 @@ class MorniMessagesSdk(private val activity: Activity) {
             return null
         } else {
             prefsDao.apply {
+                httpHeader = this@MorniMessagesSdk.httpHeader
                 baseUrl = this@MorniMessagesSdk.baseUrl
                 accessToken = this@MorniMessagesSdk.accessToken
                 appVersion = this@MorniMessagesSdk.appVersion
@@ -79,48 +85,55 @@ class MorniMessagesSdk(private val activity: Activity) {
             func
         )
 
-    fun setBaseUrl(baseUrl: String) = apply {
-        if (baseUrl.isNotEmpty()) {
-            this.baseUrl = baseUrl
-            addExtra(Intents.BASE_URL, baseUrl)
+    fun setHttpHeader(header: Interceptor?) = apply {
+        if (header != null) {
+            httpHeader = header
+            addExtra(Intents.HTTPS_HEADER, header)
         }
     }
 
-    fun setAccessToken(accessToken: String) = apply {
-        if (accessToken.isNotEmpty()) {
-            this.accessToken = accessToken
-            addExtra(Intents.ACCESS_TOKEN, accessToken)
+    fun setBaseUrl(url: String) = apply {
+        if (url.isNotEmpty()) {
+            baseUrl = url
+            addExtra(Intents.BASE_URL, url)
         }
     }
 
-    fun setLanguage(language: String) = apply {
-        if (language.isNotEmpty()) {
-            this.language = language
-            addExtra(Intents.LANGUAGE, language)
+    fun setAccessToken(token: String) = apply {
+        if (token.isNotEmpty()) {
+            accessToken = token
+            addExtra(Intents.ACCESS_TOKEN, token)
         }
     }
 
-    fun setAppVersion(appVersion: String) = apply {
-        if (appVersion.isNotEmpty()) {
-            this.appVersion = appVersion
-            addExtra(Intents.APP_VERSION, appVersion)
+    fun setLanguage(lang: String) = apply {
+        if (lang.isNotEmpty()) {
+            language = lang
+            addExtra(Intents.LANGUAGE, lang)
         }
     }
 
-    fun setPageSize(pageSize: Int) = apply {
-        if (pageSize > 0) {
-            this.pageSize = pageSize
-            addExtra(Intents.PAGE_SIZE, pageSize)
+    fun setAppVersion(_appVersion: String) = apply {
+        if (_appVersion.isNotEmpty()) {
+            appVersion = _appVersion
+            addExtra(Intents.APP_VERSION, _appVersion)
+        }
+    }
+
+    fun setPageSize(_pageSize: Int) = apply {
+        if (_pageSize > 0) {
+            pageSize = _pageSize
+            addExtra(Intents.PAGE_SIZE, _pageSize)
         }
     }
 
     /**
      * This will be set if user wants to open details of the message by its id directly.
      */
-    fun setMessageId(messageId: Long) = apply {
-        if (messageId > 0) {
-            this.messageId = messageId
-            addExtra(Intents.MESSAGE_ID, messageId)
+    fun setMessageId(_messageId: Long) = apply {
+        if (_messageId > 0) {
+            messageId = _messageId
+            addExtra(Intents.MESSAGE_ID, _messageId)
         }
     }
 

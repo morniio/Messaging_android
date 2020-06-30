@@ -2,10 +2,14 @@ package com.morni.mornimessagecenter.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.extentions.get
 import com.morni.mornimessagecenter.util.extentions.set
+import okhttp3.Interceptor
+
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
@@ -17,6 +21,18 @@ class PrefsDao constructor(context: Context) {
     init {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
+
+    var httpHeader: Interceptor?
+        get() {
+            val interceptorAsGson =  sharedPreferences.getString(HTTP_HEADER, null)
+            val builder = GsonBuilder()
+            builder.registerTypeAdapter(Interceptor::class.java, InterfaceAdapter())
+            val gson = builder.create()
+            return Gson().fromJson(interceptorAsGson, Interceptor::class.java)
+        }
+        set(value) {
+            sharedPreferences[HTTP_HEADER]= Gson().toJson(value)
+        }
 
     var accessToken: String?
         get() = sharedPreferences[ACCESS_TOKEN]
@@ -66,6 +82,7 @@ class PrefsDao constructor(context: Context) {
         private const val APP_VERSION = "app_version"
         private const val PAGE_SIZE = "page_size"
         private const val MESSAGE_ID = "message_id"
+        private const val HTTP_HEADER = "http_header"
 
         fun getInstance(context: Context): PrefsDao
                 = mInstance

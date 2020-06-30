@@ -11,6 +11,7 @@ class Intents {
         const val START_ACTION = "com.morni.mornimessagecenter.START"
         const val STATUS: String = "status"
         const val MESSAGE: String = "message"
+        const val HTTPS_HEADER: String = "http_header"
         const val BASE_URL: String = "base_url"
         const val ACCESS_TOKEN: String = "access_token"
         const val LANGUAGE: String = "language"

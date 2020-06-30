@@ -15,7 +15,7 @@ object RetroClient {
 
     fun getApiService(prefsDao: PrefsDao): ApiService {
         val okHttpClient = OkHttpClient().newBuilder()
-            .addInterceptor(AuthInterceptor(prefsDao))
+            .addInterceptor(prefsDao.httpHeader!!)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             })

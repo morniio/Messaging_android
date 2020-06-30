@@ -3,6 +3,8 @@ package com.morni.mornimessagecenter.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.morni.mornimessagecenter.R
+import com.morni.mornimessagecenter.data.local.PrefsDao
+import com.morni.mornimessagecenter.data.remote.AuthInterceptorTest
 import com.morni.mornimessagecenter.integration.MorniMessagesSdk
 
 class TestActivity : AppCompatActivity() {
@@ -16,9 +18,10 @@ class TestActivity : AppCompatActivity() {
          * This is only for testing purposes.
          */
         MorniMessagesSdk(this).apply {
-            setBaseUrl("///") // put base url here..
-            setAccessToken("lLBCiQrDdEZ9OtQjGxzS")
-            setAppVersion("1.3.0")
+            setHttpHeader(AuthInterceptorTest(PrefsDao.getInstance(this@TestActivity)))
+            setBaseUrl("https://sandbox.morniksa.com/api/provider/v1/") // put base url here..
+            setAccessToken("HrRwGf64idZxXW3_SWaa")
+            setAppVersion("2.3.1")
             setLanguage("ar")
             setPageSize(10)
             //setMessageId(6936)
