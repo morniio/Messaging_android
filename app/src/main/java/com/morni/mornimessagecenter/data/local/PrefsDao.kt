@@ -2,14 +2,11 @@ package com.morni.mornimessagecenter.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.extentions.get
 import com.morni.mornimessagecenter.util.extentions.set
 import okhttp3.Interceptor
-
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
@@ -22,17 +19,11 @@ class PrefsDao constructor(context: Context) {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    var httpHeader: Interceptor?
-        get() {
-            val interceptorAsGson =  sharedPreferences.getString(HTTP_HEADER, null)
-            val builder = GsonBuilder()
-            builder.registerTypeAdapter(Interceptor::class.java, InterfaceAdapter())
-            val gson = builder.create()
-            return Gson().fromJson(interceptorAsGson, Interceptor::class.java)
-        }
-        set(value) {
-            sharedPreferences[HTTP_HEADER]= Gson().toJson(value)
-        }
+    /**
+     * This will be set when using the library,
+     * and will be used whenever this singleton class is live.
+     */
+    var httpHeader: Interceptor? = null
 
     var accessToken: String?
         get() = sharedPreferences[ACCESS_TOKEN]
@@ -50,12 +41,6 @@ class PrefsDao constructor(context: Context) {
         get() = sharedPreferences[LANGUAGE, LocaleHelper.DEFAULT_LANGUAGE]
         set(value) {
             sharedPreferences[LANGUAGE] = value
-        }
-
-    var appVersion: String?
-        get() = sharedPreferences[APP_VERSION]
-        set(value) {
-            sharedPreferences[APP_VERSION] = value
         }
 
     var pageSize: Int?
@@ -84,8 +69,7 @@ class PrefsDao constructor(context: Context) {
         private const val MESSAGE_ID = "message_id"
         private const val HTTP_HEADER = "http_header"
 
-        fun getInstance(context: Context): PrefsDao
-                = mInstance
+        fun getInstance(context: Context) = mInstance
             ?: PrefsDao(context).apply { mInstance = this }
     }
 }

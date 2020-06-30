@@ -11,7 +11,6 @@ import com.morni.mornimessagecenter.R
 import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.integration.Intents.Companion.ACCESS_TOKEN
-import com.morni.mornimessagecenter.integration.Intents.Companion.APP_VERSION
 import com.morni.mornimessagecenter.integration.Intents.Companion.BASE_URL
 import com.morni.mornimessagecenter.integration.Intents.Companion.MESSAGE_ID
 import com.morni.mornimessagecenter.ui.fragment.MorniMessageListFragmentDirections.*
@@ -33,7 +32,7 @@ class MorniMessageActivity : AppCompatActivity() {
     }
 
     private fun initializeFromIntent(intent: Intent?) = intent.run {
-        if(!hasValueOf(BASE_URL) || !hasValueOf(ACCESS_TOKEN) || !hasValueOf(APP_VERSION))
+        if(!hasValueOf(BASE_URL) || !hasValueOf(ACCESS_TOKEN))
             showAlertDialog(
                 this@MorniMessageActivity,
                 getString(R.string.missing_data),

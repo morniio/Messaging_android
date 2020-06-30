@@ -4,6 +4,7 @@ import com.morni.mornimessagecenter.BuildConfig
 import com.morni.mornimessagecenter.data.local.PrefsDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,10 +18,9 @@ object RetroClient {
         val okHttpClient = OkHttpClient().newBuilder()
             .addInterceptor(prefsDao.httpHeader!!)
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
             })
             .build()
-
         val retrofit = Retrofit
             .Builder()
             .baseUrl(prefsDao.baseUrl!!)
@@ -28,7 +28,6 @@ object RetroClient {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-
         return retrofit.create(ApiService::class.java)
     }
 }

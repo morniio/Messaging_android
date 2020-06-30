@@ -19,9 +19,8 @@ class TestActivity : AppCompatActivity() {
          */
         MorniMessagesSdk(this).apply {
             setHttpHeader(AuthInterceptorTest(PrefsDao.getInstance(this@TestActivity)))
-            setBaseUrl("https://sandbox.morniksa.com/api/provider/v1/") // put base url here..
+            setBaseUrl("") // put base url here..
             setAccessToken("HrRwGf64idZxXW3_SWaa")
-            setAppVersion("2.3.1")
             setLanguage("ar")
             setPageSize(10)
             //setMessageId(6936)

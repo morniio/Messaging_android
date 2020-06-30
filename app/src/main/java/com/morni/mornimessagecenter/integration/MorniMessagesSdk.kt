@@ -26,7 +26,6 @@ class MorniMessagesSdk(private val activity: Activity) {
     private var httpHeader: Interceptor?= null
     private var baseUrl: String? = null
     private var accessToken: String? = null
-    private var appVersion: String? = null
     private var language: String? = null
     private var pageSize: Int? = null
     private var messageId: Long? = null
@@ -47,12 +46,6 @@ class MorniMessagesSdk(private val activity: Activity) {
         if (accessToken.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.access_token)} ${activity.getString(R.string.is_missing)}")
 
-        if (appVersion.isNullOrBlank())
-            errorsList.add(
-                "${activity.getString(R.string.application_version)} ${activity.getString(
-                    R.string.is_missing
-                )}"
-            )
         if (errorsList.isNotEmpty()) {
             showAlertDialog(
                 activity,
@@ -68,7 +61,6 @@ class MorniMessagesSdk(private val activity: Activity) {
                 httpHeader = this@MorniMessagesSdk.httpHeader
                 baseUrl = this@MorniMessagesSdk.baseUrl
                 accessToken = this@MorniMessagesSdk.accessToken
-                appVersion = this@MorniMessagesSdk.appVersion
                 language = this@MorniMessagesSdk.language ?: LocaleHelper.DEFAULT_LANGUAGE
                 pageSize = this@MorniMessagesSdk.pageSize ?: Intents.DEFAULT_PAGE_SIZE
                 messageId = this@MorniMessagesSdk.messageId
@@ -110,13 +102,6 @@ class MorniMessagesSdk(private val activity: Activity) {
         if (lang.isNotEmpty()) {
             language = lang
             addExtra(Intents.LANGUAGE, lang)
-        }
-    }
-
-    fun setAppVersion(_appVersion: String) = apply {
-        if (_appVersion.isNotEmpty()) {
-            appVersion = _appVersion
-            addExtra(Intents.APP_VERSION, _appVersion)
         }
     }
 
