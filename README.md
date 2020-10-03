@@ -132,15 +132,12 @@ Step 2: Add the following line to proguard rules file:
 
 Use "MorniMessagesSdk" class for lunching the library with customize options 
 
-### For Kotlin
-
-  	MorniMessagesSdk(this).apply {
-            setBaseUrl("end-point path") // mandatory
+     MorniMessagesSdk(it).apply {
+            setHttpHeader("auth-interceptor-of-the-current-app") // mandatory
+            setBaseUrl("server-url") // mandatory
             setAccessToken("user-access-token") // mandatory
-            setAppVersion("app-version") // mandatory
-            setLanguage("device language") // optional and the default language is "ar"
-            setPageSize(10) // optional and the default value is 10
-            initiate()?.showMessages() // To init and show message list screen.
+            setLanguage("device-language") // optional and the default language is "ar"
+            initiate()
         }
 	
     // Get the results
@@ -149,26 +146,7 @@ Use "MorniMessagesSdk" class for lunching the library with customize options
         if (result != null) super.onActivityResult(requestCode, resultCode, data)  
     }
 
-### For Java
 
-    MorniMessagesSdk instance = new MorniMessagesSdk(this)
-                .setBaseUrl("end-point path") // mandatory
-                .setAccessToken("user access token") // mandatory
-                .setLanguage("device language") // optional and the default language is "ar"
-                .setAppVersion("device-version") // mandatory
-                .setPageSize(10)  // optional and the default value is 10
-                .initiate();
-		
-        if(instance != null)
-            instance.showMessages();
-    
-    // Get the results
-    @Override  
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {  
-        IntentResult result = MorniMessagesSdk.parseActivityResult(requestCode, resultCode, data);  
-        if (result != null) 
-	      super.onActivityResult(requestCode, resultCode, data);  
-    }
 ## Customization and advanced options
 
 ### Customize Message Cell
