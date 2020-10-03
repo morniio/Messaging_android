@@ -9,10 +9,10 @@ android {
     compileSdkVersion 29
     defaultConfig {
         /*applicationId "com.morni.mornimessagecenter"*/
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 29
-        versionCode 10008
-        versionName "1.0.8"
+        versionCode 10009
+        versionName "1.0.9"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
