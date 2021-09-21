@@ -6,24 +6,14 @@ import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.extentions.get
 import com.morni.mornimessagecenter.util.extentions.set
-import okhttp3.Interceptor
 
 /**
  * Created by Rami El-bouhi on 09,September,2019
  */
 class PrefsDao constructor(context: Context) {
 
-    private val sharedPreferences: SharedPreferences
-
-    init {
-        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    }
-
-    /**
-     * This will be set when using the library,
-     * and will be used whenever this singleton class is live.
-     */
-    var httpHeader: Interceptor? = null
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     var accessToken: String?
         get() = sharedPreferences[ACCESS_TOKEN]
@@ -42,7 +32,11 @@ class PrefsDao constructor(context: Context) {
         set(value) {
             sharedPreferences[LANGUAGE] = value
         }
-
+    var appVersion: String?
+        get() = sharedPreferences[APP_VERSION]
+        set(value) {
+            sharedPreferences[APP_VERSION] = value
+        }
     var pageSize: Int?
         get() = sharedPreferences[PAGE_SIZE, Intents.DEFAULT_PAGE_SIZE]
         set(value) {
@@ -54,6 +48,17 @@ class PrefsDao constructor(context: Context) {
         set(value) {
             sharedPreferences[MESSAGE_ID] = value
         }
+    var store: String?
+        get() = sharedPreferences[STORE, Intents.DEFAULT_STORE]
+        set(value) {
+            sharedPreferences[STORE] = value
+        }
+    var appType: String?
+        get() = sharedPreferences[APP_TYPE, ""]
+        set(value) {
+            sharedPreferences[APP_TYPE] = value
+        }
+
 
     fun clear() = sharedPreferences.edit().clear().apply()
 
@@ -67,7 +72,8 @@ class PrefsDao constructor(context: Context) {
         private const val APP_VERSION = "app_version"
         private const val PAGE_SIZE = "page_size"
         private const val MESSAGE_ID = "message_id"
-        private const val HTTP_HEADER = "http_header"
+        private const val STORE = "store"
+        private const val APP_TYPE = "app_type"
 
         fun getInstance(context: Context) = mInstance
             ?: PrefsDao(context).apply { mInstance = this }

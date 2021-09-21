@@ -5,11 +5,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.morni.mornimessagecenter.data.Repository
 import com.morni.mornimessagecenter.data.model.MorniApiStatus
 import com.morni.mornimessagecenter.data.model.MorniMessage
+import com.morni.mornimessagecenter.integration.Intents
 import com.morni.mornimessagecenter.ui.datasource.MessagesDataSource
 import com.morni.mornimessagecenter.ui.datasource.factory.MessagesDataSourceFactory
-import com.morni.mornimessagecenter.data.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -28,8 +29,8 @@ class MorniMessageListViewModel(repository: Repository) : ViewModel() {
         messagesDataSourceFactory =
             MessagesDataSourceFactory(compositeDisposable, repository.apiService)
         val config = PagedList.Config.Builder()
-            .setPageSize(repository.prefsDao.pageSize!!)
-            .setInitialLoadSizeHint(repository.prefsDao.pageSize!! * 2)
+            .setPageSize(repository.prefsDao.pageSize ?: Intents.DEFAULT_PAGE_SIZE)
+            .setInitialLoadSizeHint(repository.prefsDao.pageSize ?: Intents.DEFAULT_PAGE_SIZE * 2)
             .setEnablePlaceholders(true)
             .build()
         morniMessages = LivePagedListBuilder(messagesDataSourceFactory, config)
@@ -57,5 +58,4 @@ class MorniMessageListViewModel(repository: Repository) : ViewModel() {
     fun refresh() {
         messagesDataSourceFactory.messagesDataSourceLiveData.value?.invalidate()
     }
-
 }

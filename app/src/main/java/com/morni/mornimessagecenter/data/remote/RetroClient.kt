@@ -16,14 +16,14 @@ object RetroClient {
 
     fun getApiService(prefsDao: PrefsDao): ApiService {
         val okHttpClient = OkHttpClient().newBuilder()
-            .addInterceptor(prefsDao.httpHeader!!)
+            .addInterceptor(AuthInterceptor(prefsDao))
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
             })
             .build()
         val retrofit = Retrofit
             .Builder()
-            .baseUrl(prefsDao.baseUrl!!)
+            .baseUrl(prefsDao.baseUrl ?: "")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
