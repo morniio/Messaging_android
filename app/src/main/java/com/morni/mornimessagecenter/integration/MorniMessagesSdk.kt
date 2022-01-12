@@ -10,6 +10,7 @@ import com.morni.mornimessagecenter.di.Injection
 import com.morni.mornimessagecenter.ui.activity.MorniMessageActivity
 import com.morni.mornimessagecenter.util.LocaleHelper
 import com.morni.mornimessagecenter.util.showAlertDialog
+import okhttp3.Interceptor
 
 /**
  * Created by Rami El-bouhi on 17,September,2019
@@ -21,12 +22,10 @@ class MorniMessagesSdk(private val activity: Activity) {
     private var defaultActivity: Class<*>? = null
     private val moreExtras = HashMap<String, Any>()
     private var requestCode: Int = REQUEST_CODE
+    private var httpHeader: Interceptor? = null
     private var baseUrl: String? = null
     private var accessToken: String? = null
     private var language: String? = null
-    private var appVersion: String? = null
-    private var store: String? = null
-    private var appType: String? = null
     private var pageSize: Int? = null
     private var messageId: Long? = null
 
@@ -37,23 +36,14 @@ class MorniMessagesSdk(private val activity: Activity) {
     fun initiate(): MorniMessagesSdk? = apply {
         val errorsList = ArrayList<String>()
 
+        if (httpHeader == null)
+            errorsList.add("${activity.getString(R.string.http_header)} ${activity.getString(R.string.is_missing)}")
+
         if (baseUrl.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.base_url)} ${activity.getString(R.string.is_missing)}")
 
         if (accessToken.isNullOrBlank())
             errorsList.add("${activity.getString(R.string.access_token)} ${activity.getString(R.string.is_missing)}")
-
-        if (appVersion.isNullOrBlank())
-            errorsList.add(
-                "${activity.getString(R.string.application_version)} ${
-                    activity.getString(
-                        R.string.is_missing
-                    )
-                }"
-            )
-
-        if (appType.isNullOrBlank())
-            errorsList.add("${activity.getString(R.string.application_type)} ${activity.getString(R.string.is_missing)}")
 
         if (errorsList.isNotEmpty()) {
             showAlertDialog(
@@ -67,12 +57,10 @@ class MorniMessagesSdk(private val activity: Activity) {
             return null
         } else {
             prefsDao.apply {
-                baseUrl = this@MorniMessagesSdk.baseUrl ?: ""
-                accessToken = this@MorniMessagesSdk.accessToken ?: ""
+                httpHeader = this@MorniMessagesSdk.httpHeader
+                baseUrl = this@MorniMessagesSdk.baseUrl
+                accessToken = this@MorniMessagesSdk.accessToken
                 language = this@MorniMessagesSdk.language ?: LocaleHelper.DEFAULT_LANGUAGE
-                appVersion = this@MorniMessagesSdk.appVersion ?: ""
-                store = this@MorniMessagesSdk.store ?: Intents.DEFAULT_STORE
-                appType = this@MorniMessagesSdk.appType ?: ""
                 pageSize = this@MorniMessagesSdk.pageSize ?: Intents.DEFAULT_PAGE_SIZE
                 messageId = this@MorniMessagesSdk.messageId
             }
@@ -86,6 +74,13 @@ class MorniMessagesSdk(private val activity: Activity) {
             Injection.provideRepository(activity),
             func
         )
+
+    fun setHttpHeader(header: Interceptor?) = apply {
+        if (header != null) {
+            httpHeader = header
+            addExtra(Intents.HTTPS_HEADER, header)
+        }
+    }
 
     fun setBaseUrl(url: String) = apply {
         if (url.isNotEmpty()) {
@@ -105,27 +100,6 @@ class MorniMessagesSdk(private val activity: Activity) {
         if (lang.isNotEmpty()) {
             language = lang
             addExtra(Intents.LANGUAGE, lang)
-        }
-    }
-
-    fun setAppVersion(appVersion: String) = apply {
-        if (appVersion.isNotEmpty()) {
-            this.appVersion = appVersion
-            addExtra(Intents.APP_VERSION, appVersion)
-        }
-    }
-
-    fun setStore(store: String) = apply {
-        if (store.isNotEmpty()) {
-            this.store = store
-            addExtra(Intents.STORE, store)
-        }
-    }
-
-    fun setAppType(appType: String) = apply {
-        if (appType.isNotEmpty()) {
-            this.appType = appType
-            addExtra(Intents.APP_TYPE, appType)
         }
     }
 

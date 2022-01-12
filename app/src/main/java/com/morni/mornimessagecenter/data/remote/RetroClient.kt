@@ -2,6 +2,7 @@ package com.morni.mornimessagecenter.data.remote
 
 import com.morni.mornimessagecenter.BuildConfig
 import com.morni.mornimessagecenter.data.local.PrefsDao
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -15,8 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetroClient {
 
     fun getApiService(prefsDao: PrefsDao): ApiService {
+        val authInterceptor : Interceptor =
+            if (prefsDao.httpHeader != null) prefsDao.httpHeader!! else DefaultAuthInterceptor(prefsDao)
+
         val okHttpClient = OkHttpClient().newBuilder()
-            .addInterceptor(AuthInterceptor(prefsDao))
+            .addInterceptor(authInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
             })

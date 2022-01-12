@@ -9,10 +9,10 @@
     <string name="no_internet_connection_try_again">No internet connection, tap to retry again</string>
     <string name="missing_data">Missing Data</string>
     <string name="is_missing">is missing</string>
+    <string name="http_header" translatable="false">HTTP Header attributes</string>
     <string name="base_url" translatable="false">Base Url attribute</string>
     <string name="access_token" translatable="false">Token attribute</string>
     <string name="application_version" translatable="false">Application version attribute</string>
-    <string name="application_type" translatable="false">Application type attribute</string>
     <string name="not_use_integration_error_msg" translatable="false">Please use sdk class to be able to integrate with this library</string>
     <string name="at">at</string>
 
